@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-services>
+	
+	<!-- 登陆服务 -->	
+	<service>
+		<key>MessageForwardService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.MessageForwardService</class>
+	</service>
+</message-services>
