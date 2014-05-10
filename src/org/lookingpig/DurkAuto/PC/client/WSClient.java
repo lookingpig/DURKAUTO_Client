@@ -60,7 +60,6 @@ public class WSClient {
 	@OnOpen
 	public void onOpen(Session session) {
 		this.session = session;
-		clientPool.add(this);
 		aesKey = (String) session.getUserProperties().get(ClientConfig.AES_KEY_KEYWORD);
 
 		logger.info("已经与服务器建立连接。id: " + this.session.getId());
