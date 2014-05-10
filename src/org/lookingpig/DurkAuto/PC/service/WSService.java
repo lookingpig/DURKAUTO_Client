@@ -95,6 +95,7 @@ public class WSService {
 			String key;
 			
 			Message msg = new Message();
+			msg.setCaller(this);
 			msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
 
 			while (i.hasNext()) {
@@ -109,15 +110,14 @@ public class WSService {
 				}
 			}
 
-			// 第一次发送消息将自己加入到客户端队列
-			if (!clients.containsValue(this)) {
-				name = msg.getSender();
-				clients.put(name, this);
-			}
-
 			// 交由消息服务处理
-			MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
+			Message response = MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
 					.service(msg);
+
+			//有响应消息时回馈客户端
+			if (null != response) {
+				sendMessage(response);
+			}
 		} catch (Exception e) {
 			logger.error("接收到一条异常的消息！message: " + message, e);
 		}
@@ -151,5 +151,38 @@ public class WSService {
 			logger.error("向客户端发送消息失败！name: " + name, e);
 			throw e;
 		}
+	}
+	
+	/**
+	 * 设置服务名称
+	 * @param name 名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * 获得服务名称
+	 * @return 名称
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * 添加一个客户端
+	 * @param name 名称
+	 * @param service 服务对象
+	 */
+	public static void addClient(String name, WSService service) {
+		clients.put(name, service);
+	}
+	
+	/**
+	 * 获得指定客户端
+	 * @param name 名称
+	 */
+	public static WSService getClient(String name) {
+		return clients.get(name);
 	}
 }
