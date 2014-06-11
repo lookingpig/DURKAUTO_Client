@@ -5,8 +5,11 @@ import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -40,29 +43,45 @@ public class WSClient {
 	private static final Logger logger;
 	private static final List<WSClient> clientPool;
 	private static final CryptographService cryptograph;
+	private static final AtomicInteger connectionTotal;
 
 	private StringBuffer largeMessage;
 	private Session session;
 	private String aesKey;
 	private boolean idle;
+	private int id;
 
 	static {
 		logger = LogManager.getLogger(WSClient.class);
 		clientPool = new ArrayList<>();
 		cryptograph = new AESCryptographService();
+		connectionTotal = new AtomicInteger(0);
 	}
 
 	public WSClient() {
-		idle = true;
+		idle = false;
 		largeMessage = new StringBuffer();
 	}
 
 	@OnOpen
 	public void onOpen(Session session) {
+		id = connectionTotal.incrementAndGet();
 		this.session = session;
 		aesKey = (String) session.getUserProperties().get(ClientConfig.AES_KEY_KEYWORD);
-
+		clientPool.add(this);
 		logger.info("已经与服务器建立连接。id: " + this.session.getId());
+
+		//发送上线消息
+		Message msg = new Message();
+		msg.setSender(ClientConfig.getConfig("durkauto.pc.sender") + "_" + id);
+		msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
+		msg.addContent(ClientConfig.MESSAGESERVICE_KEY_NAME, "OnLineService");
+
+		try {
+			sendMessage(msg);
+		} catch (IOException e) {
+			logger.error("向服务器发送上线消息失败，原因：", e);
+		}
 	}
 
 	@OnClose
@@ -146,6 +165,10 @@ public class WSClient {
 		String strMsg = null;
 		
 		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.DATETIME_FORMAT);
+			LocalDateTime now = LocalDateTime.now();
+			message.setSendTime(formatter.format(now));
+			
 			strMsg = MessageFactory.getFactory().blend(message);
 			// 加密
 			strMsg = cryptograph.encrypt(strMsg, aesKey);
@@ -217,5 +240,13 @@ public class WSClient {
 		
 		// TODO池功能待实现
 		return null;
+	}
+	
+	/**
+	 * 添加一个客户端
+	 * @param client 客户端
+	 */
+	public static void addClient(WSClient client) {
+		clientPool.add(client);
 	}
 }

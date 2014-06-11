@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.websocket.DeploymentException;
 
@@ -20,7 +19,6 @@ import org.lookingpig.Tools.Service.MessageService.MessageServiceFactory;
  * @author Pig
  *
  */
-@WebServlet("/InitSysServlet")
 public class InitSysServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LogManager.getLogger(InitSysServlet.class);
@@ -34,10 +32,15 @@ public class InitSysServlet extends HttpServlet {
     
     @Override
     public void init(ServletConfig config) throws ServletException {
+    	super.init(config);
     	logger.info("----------开始初始化DurkAuto客户端服务----------");
     	super.init(config);
     	
-    	logger.info("1，与远程服务器建立连接");
+    	logger.info("1，初始化消息服务");
+    	File msgSerCof = new File(Class.class.getResource("/").getPath() + ClientConfig.getConfig("durkauto.pc.messageservice.config.path"));
+    	MessageServiceFactory.getFactory().loadServices(msgSerCof);
+    	
+    	logger.info("2，与远程服务器建立连接");
     	try {
     		//与远程服务器建立连接
     		WSClient.connect(ClientConfig.getConfig("durkauto.server.host"));
@@ -46,10 +49,6 @@ public class InitSysServlet extends HttpServlet {
     	} catch (IOException e) {
     		logger.error("WebSocket读/写异常！", e);
     	}
-    	
-    	logger.info("2，初始化消息服务");
-    	File msgSerCof = new File(Class.class.getResource("/").getPath() + ClientConfig.getConfig("durkauto.pc.messageservice.config.path"));
-    	MessageServiceFactory.getFactory().loadServices(msgSerCof);
     	
     	logger.info("----------成功初始化DurkAuto客户端服务----------");
     }
