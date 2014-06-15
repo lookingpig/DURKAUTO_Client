@@ -16,4 +16,8 @@
 		<servlet-class>org.lookingpig.DurkAuto.PC.init.InitSysServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitSystem</servlet-name>
+		<url-pattern>/init</url-pattern>
+	</servlet-mapping>
 </web-app>

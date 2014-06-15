@@ -60,28 +60,17 @@ public class WSClient {
 
 	public WSClient() {
 		idle = false;
+		aesKey = ClientConfig.getConfig("durkauto.pc.messageservice.initial.key");
 		largeMessage = new StringBuffer();
 	}
 
 	@OnOpen
 	public void onOpen(Session session) {
+		logger.info("已经与服务器建立连接。id: " + session.getId());
+		
 		id = connectionTotal.incrementAndGet();
 		this.session = session;
-		aesKey = (String) session.getUserProperties().get(ClientConfig.AES_KEY_KEYWORD);
 		clientPool.add(this);
-		logger.info("已经与服务器建立连接。id: " + this.session.getId());
-
-		//发送上线消息
-		Message msg = new Message();
-		msg.setSender(ClientConfig.getConfig("durkauto.pc.sender") + "_" + id);
-		msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
-		msg.addContent(ClientConfig.MESSAGESERVICE_KEY_NAME, "OnLineService");
-
-		try {
-			sendMessage(msg);
-		} catch (IOException e) {
-			logger.error("向服务器发送上线消息失败，原因：", e);
-		}
 	}
 
 	@OnClose
@@ -100,7 +89,7 @@ public class WSClient {
 
 		if (last) {
 			logger.info("接收到一条来自服务器的消息：" + largeMessage.toString());
-			messageComplete(largeMessage.toString());
+			messageComplete(largeMessage.toString());				
 			largeMessage.delete(0, largeMessage.length());
 		}
 	}
@@ -113,36 +102,38 @@ public class WSClient {
 	 */
 	private void messageComplete(String message) {
 		try {
-		// 校验格式
-		if (!message.contains(ClientConfig.ENCRYPT_CHECK_SPLIT_MARK)) {
-			logger.warn("接收到一条非法消息！message: " + message);
-			return;
-		}
+			// 校验格式
+			if (!message.contains(ClientConfig.ENCRYPT_CHECK_SPLIT_MARK)) {
+				logger.warn("接收到一条非法消息！message: " + message);
+				return;
+			}
 
-		String[] content = message.split(ClientConfig.ENCRYPT_CHECK_SPLIT_MARK);
+			String[] content = message.split(ClientConfig.ENCRYPT_CHECK_SPLIT_MARK);
 
-		if (2 != content.length) {
-			logger.warn("接收到一条非法消息！message: " + message);
-			return;
-		}
+			if (2 != content.length) {
+				logger.warn("接收到一条非法消息！message: " + message);
+				return;
+			}
 
-		// 解密
-		message = cryptograph.decrypt(content[0], aesKey);
-		Message msg = MessageFactory.getFactory().resolve(message);
+			// 解密
+			message = cryptograph.decrypt(content[0], aesKey);
+			Message msg = MessageFactory.getFactory().resolve(message);
 
-		// 校验是否被修改
-		MessageDigest mdInst = MessageDigest.getInstance(ClientConfig.CHECK_SERVICE_ENCODE_MODE);
-		mdInst.update((content[0] + msg.getSendTime()).getBytes());
-		String checkStr = Base64.encodeBase64String(mdInst.digest());
+			// 校验是否被修改
+			MessageDigest mdInst = MessageDigest.getInstance(ClientConfig.CHECK_SERVICE_ENCODE_MODE);
+			mdInst.update((content[0] + msg.getSendTime()).getBytes());
+			String checkStr = Base64.encodeBase64String(mdInst.digest());
 
-		if (!content[1].equals(checkStr)) {
-			logger.warn("接收到一条被修改的消息！message: " + message);
-			return;
-		}
+			if (!content[1].equals(checkStr)) {
+				logger.warn("接收到一条被修改的消息！message: " + message);
+				return;
+			}
 
-		// 交由消息服务处理
-		MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
-				.service(msg);
+			msg.setCaller(this);
+
+			// 交由消息服务处理
+			MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
+					.service(msg);
 		} catch (InvalidKeyException e) {
 			logger.error("解密密匙格式不对！key: " + aesKey, e);
 			return;
@@ -163,12 +154,12 @@ public class WSClient {
 	 */
 	public void sendMessage(Message message) throws IOException {
 		String strMsg = null;
-		
+
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.DATETIME_FORMAT);
 			LocalDateTime now = LocalDateTime.now();
 			message.setSendTime(formatter.format(now));
-			
+
 			strMsg = MessageFactory.getFactory().blend(message);
 			// 加密
 			strMsg = cryptograph.encrypt(strMsg, aesKey);
@@ -190,6 +181,17 @@ public class WSClient {
 			logger.error("向服务器发送消息失败！msg: " + strMsg, e);
 		}
 	}
+	
+	/**
+	 * 向服务器发送本地消息
+	 * @param message 消息对象
+	 * @throws IOException 消息发送失败
+	 */
+	public void sendLocalMessage(Message message) throws IOException {
+		message.setSender(ClientConfig.getConfig("durkauto.pc.sender") + "_" + id);
+		message.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
+		sendMessage(message);
+	}
 
 	/**
 	 * 与服务器建立连接
@@ -203,26 +205,45 @@ public class WSClient {
 	 *             读/写问题
 	 */
 	public static Session connect(String uri) throws DeploymentException, IOException {
+		logger.info("与" + uri + "服务器建立连接。");
 		WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 		return container.connectToServer(WSClient.class, URI.create(uri));
 	}
 
 	/**
+	 * 关闭与服务器连接
+	 */
+	public void close() {
+		if (clientPool.contains(this)) {
+			clientPool.remove(this);
+		}
+
+		try {
+			session.close();
+		} catch (IOException e) {
+			logger.error("断开与服务器连接失败！", e);
+		}
+	}
+
+	/**
 	 * 设置空闲状态
-	 * @param idle 是否空闲
+	 * 
+	 * @param idle
+	 *            是否空闲
 	 */
 	public void setIdle(boolean idle) {
 		this.idle = idle;
 	}
-	
+
 	/**
 	 * 获取空闲状态
+	 * 
 	 * @return 是否空闲
 	 */
 	public boolean isIdle() {
 		return idle;
 	}
-	
+
 	/**
 	 * 获得指定客户端
 	 * 
@@ -231,22 +252,32 @@ public class WSClient {
 	 * @return 客户端
 	 */
 	public static WSClient getClient() {
-		
+
 		for (WSClient client : clientPool) {
 			if (client.isIdle()) {
 				return client;
 			}
 		}
-		
+
 		// TODO池功能待实现
 		return null;
 	}
-	
+
 	/**
 	 * 添加一个客户端
-	 * @param client 客户端
+	 * 
+	 * @param client
+	 *            客户端
 	 */
 	public static void addClient(WSClient client) {
 		clientPool.add(client);
+	}
+	
+	/**
+	 * 设置AES密匙
+	 * @param key 密匙
+	 */
+	public void setAESKey(String key) {
+		aesKey = key;
 	}
 }

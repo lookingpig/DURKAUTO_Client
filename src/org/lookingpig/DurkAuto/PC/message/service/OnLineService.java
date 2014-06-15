@@ -30,6 +30,7 @@ public class OnLineService implements MessageService {
 		response.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
 		response.setSendTime(formatter.format(now));
 		response.addContent(ClientConfig.MESSAGESERVICE_KEY_NAME, message.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME));
+		response.addContent(ClientConfig.MESSAGESERVICE_TYPE, ClientConfig.MESSAGESERVICE_TYPE_RESPONSE);
 		response.addContent("state", "success");
 		return response;
 	}
