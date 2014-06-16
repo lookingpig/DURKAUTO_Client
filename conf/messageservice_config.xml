@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <message-services>
-	<!-- 客户连线服务 -->
+	<!-- 更换消息通讯密匙服务 -->
 	<service>
-		<key>OnLine</key>
-		<class>org.lookingpig.DurkAuto.PC.message.service.OnLineService</class>
+		<key>ChangeMessageKeyService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.ChangeMessageKeyService</class>
 	</service>
 	
 	<!-- 在服务器上线响应处理 -->
@@ -18,9 +18,15 @@
 		<class>org.lookingpig.DurkAuto.PC.message.service.MessageForwardService</class>
 	</service>
 	
-	<!-- 更换消息通讯密匙服务 -->
+	<!-- 客户连线服务 -->
 	<service>
-		<key>ChangeMessageKeyService</key>
-		<class>org.lookingpig.DurkAuto.PC.message.service.ChangeMessageKeyService</class>
+		<key>OnLine</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.OnLineService</class>
+	</service>
+	
+	<!-- 登陆服务 -->
+	<service>
+		<key>Login</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.LoginService</class>
 	</service>
 </message-services>

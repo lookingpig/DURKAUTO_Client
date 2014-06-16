@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lookingpig.DurkAuto.PC.client.WSClient;
 import org.lookingpig.DurkAuto.PC.conf.ClientConfig;
+import org.lookingpig.Tools.Database.DatabaseService;
 import org.lookingpig.Tools.Service.MessageService.MessageServiceFactory;
 
 /**
@@ -44,6 +45,11 @@ public class InitSysServlet extends HttpServlet {
 			File msgSerCof = new File(InitSysServlet.class.getClassLoader().getResource("/").getPath()
 					+ ClientConfig.getConfig("durkauto.pc.messageservice.config.path"));
 			MessageServiceFactory.getFactory().loadServices(msgSerCof);
+			
+			logger.info("2，初始化数据服务");
+			File datSerCof = new File(InitSysServlet.class.getClassLoader().getResource("/").getPath()
+					+ ClientConfig.getConfig("durkauto.pc.databaseservice.config.path"));
+			DatabaseService.getService().loadService(datSerCof);
 		} catch (Exception e) {
 			logger.error("初始化DurkAuto客户端失败！原因：", e);
 		}
@@ -53,7 +59,7 @@ public class InitSysServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		logger.info("2，与远程服务器建立连接");
+		logger.info("开始与远程服务器建立连接");
 		
 		try {
 			// 与远程服务器建立连接

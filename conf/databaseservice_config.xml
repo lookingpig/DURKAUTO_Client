@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database-services>
+	<!-- 获得用户信息 -->
+	<sql>
+		<key>GetUserInfo</key>
+		<statement>select * from durkauto_user where username='?' and password='?'</statement>
+		<parameter type="string">username</parameter>
+		<parameter type="string">password</parameter>
+	</sql>
+</database-services>

@@ -86,30 +86,11 @@ public class WSService {
 	 * @param message
 	 *            消息
 	 */
-	@SuppressWarnings("unchecked")
 	private void messageComplete(String message) {
 		try {
-			// 转换数据格式
-			JSONObject msgJson = JSONObject.fromObject(message);
-			Iterator<String> i = msgJson.keys();
-			String key;
-			
-			Message msg = new Message();
+			Message msg = JsonToMessage(message);
 			msg.setCaller(this);
-			msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
-
-			while (i.hasNext()) {
-				key = i.next();
-
-				if ("username".equals(key)) {
-					msg.setSender(msgJson.getString(key));
-				} else if ("sendtime".equals(key)) {
-					msg.setSendTime(msgJson.getString(key));
-				} else {
-					msg.addContent(key, msgJson.getString(key));
-				}
-			}
-
+			
 			// 交由消息服务处理
 			Message response = MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
 					.service(msg);
@@ -132,21 +113,10 @@ public class WSService {
 	 *             发送消息失败
 	 */
 	public void sendMessage(Message msg) throws IOException {
-		JSONObject msgJson = new JSONObject();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.DATETIME_FORMAT);
-		LocalDateTime now = LocalDateTime.now();
-
-		// 加入回应内容
-		msgJson.put("sendtime", formatter.format(now));
-		Map<String, String> contents = msg.getContents();
-		Set<String> keys = contents.keySet();
-
-		for (String key : keys) {
-			msgJson.put(key, contents.get(key));
-		}
-
 		try {
-			session.getBasicRemote().sendText(msgJson.toString());
+			String jsonStr = MessageToJson(msg);
+			
+			session.getBasicRemote().sendText(jsonStr);
 		} catch (IOException e) {
 			logger.error("向客户端发送消息失败！name: " + name, e);
 			throw e;
@@ -184,5 +154,57 @@ public class WSService {
 	 */
 	public static WSService getClient(String name) {
 		return clients.get(name);
+	}
+	
+	/**
+	 * 将JSON格式转换为Message
+	 * @param json json文本
+	 * @return Message对象
+	 */
+	@SuppressWarnings("unchecked")
+	public static Message JsonToMessage(String json) {
+		// 转换数据格式
+		JSONObject msgJson = JSONObject.fromObject(json);
+		Iterator<String> i = msgJson.keys();
+		String key;
+		
+		Message msg = new Message();
+		msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
+
+		while (i.hasNext()) {
+			key = i.next();
+
+			if ("username".equals(key)) {
+				msg.setSender(msgJson.getString(key));
+			} else if ("sendtime".equals(key)) {
+				msg.setSendTime(msgJson.getString(key));
+			} else {
+				msg.addContent(key, msgJson.getString(key));
+			}
+		}
+		
+		return msg;
+	}
+	
+	/**
+	 * 将Message转换成Json格式
+	 * @param message 消息对象
+	 * @return json文本
+	 */
+	public static String MessageToJson(Message message) {
+		JSONObject msgJson = new JSONObject();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.DATETIME_FORMAT);
+		LocalDateTime now = LocalDateTime.now();
+
+		// 加入回应内容
+		msgJson.put("sendtime", formatter.format(now));
+		Map<String, String> contents = message.getContents();
+		Set<String> keys = contents.keySet();
+
+		for (String key : keys) {
+			msgJson.put(key, contents.get(key));
+		}
+		
+		return msgJson.toString();
 	}
 }

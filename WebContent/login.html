@@ -201,9 +201,25 @@ fieldset {
 }
 </style>
 
-<script type="text/javascript" src="js/ws.client.js"></script>
-<script type="text/javascript">  
-	
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+$(function($) {
+	$("#login").submit(function(e){
+		var obj = {};
+		obj.ServiceName = "";
+		obj.username = $("#username").val();
+		obj.password = $("#password").val();
+
+		$.post("Service", { "Message": JSON.stringify(obj) },
+			function(data){
+				if ("000000000" == data.StateCode) {
+					alert("Success！");
+				} else {
+					alert("Fall code: " + data.StateCode);
+				}
+	   	}, "json");
+	});	
+});
 </script>   
 
 </head>
