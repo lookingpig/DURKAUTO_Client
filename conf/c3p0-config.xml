@@ -1,7 +1,7 @@
 <c3p0-config>
 	<default-config>
-		<property name="user">root</property>
-		<property name="password">root</property>
+		<property name="user">pig</property>
+		<property name="password">Hype8912</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://192.168.1.102:3306/durkauto_shops</property>
 

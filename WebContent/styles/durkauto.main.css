@@ -1,0 +1,8 @@
+.top {
+	margin: 30px 10px;
+    padding-top: 120px;
+	background: url('../imgs/logo.jpg');
+	background-size: auto 120px;
+	background-repeat: no-repeat; 
+	background-color: #000000;
+}

@@ -1,11 +1,7 @@
 package org.lookingpig.DurkAuto.PC.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,8 +12,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,14 +82,14 @@ public class WSService {
 	 */
 	private void messageComplete(String message) {
 		try {
-			Message msg = JsonToMessage(message);
+			Message msg = Service.jsonToMessage(message);
 			msg.setCaller(this);
-			
-			// 交由消息服务处理
-			Message response = MessageServiceFactory.getFactory().getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME))
-					.service(msg);
 
-			//有响应消息时回馈客户端
+			// 交由消息服务处理
+			Message response = MessageServiceFactory.getFactory()
+					.getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME)).service(msg);
+
+			// 有响应消息时回馈客户端
 			if (null != response) {
 				sendMessage(response);
 			}
@@ -114,97 +108,53 @@ public class WSService {
 	 */
 	public void sendMessage(Message msg) throws IOException {
 		try {
-			String jsonStr = MessageToJson(msg);
-			
+			String jsonStr = Service.messageToJson(msg);
+
 			session.getBasicRemote().sendText(jsonStr);
 		} catch (IOException e) {
 			logger.error("向客户端发送消息失败！name: " + name, e);
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * 设置服务名称
-	 * @param name 名称
+	 * 
+	 * @param name
+	 *            名称
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * 获得服务名称
+	 * 
 	 * @return 名称
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * 添加一个客户端
-	 * @param name 名称
-	 * @param service 服务对象
+	 * 
+	 * @param name
+	 *            名称
+	 * @param service
+	 *            服务对象
 	 */
 	public static void addClient(String name, WSService service) {
 		clients.put(name, service);
 	}
-	
+
 	/**
 	 * 获得指定客户端
-	 * @param name 名称
+	 * 
+	 * @param name
+	 *            名称
 	 */
 	public static WSService getClient(String name) {
 		return clients.get(name);
-	}
-	
-	/**
-	 * 将JSON格式转换为Message
-	 * @param json json文本
-	 * @return Message对象
-	 */
-	@SuppressWarnings("unchecked")
-	public static Message JsonToMessage(String json) {
-		// 转换数据格式
-		JSONObject msgJson = JSONObject.fromObject(json);
-		Iterator<String> i = msgJson.keys();
-		String key;
-		
-		Message msg = new Message();
-		msg.setSendNumber(ClientConfig.getConfig("durkauto.pc.sendnumber"));
-
-		while (i.hasNext()) {
-			key = i.next();
-
-			if ("username".equals(key)) {
-				msg.setSender(msgJson.getString(key));
-			} else if ("sendtime".equals(key)) {
-				msg.setSendTime(msgJson.getString(key));
-			} else {
-				msg.addContent(key, msgJson.getString(key));
-			}
-		}
-		
-		return msg;
-	}
-	
-	/**
-	 * 将Message转换成Json格式
-	 * @param message 消息对象
-	 * @return json文本
-	 */
-	public static String MessageToJson(Message message) {
-		JSONObject msgJson = new JSONObject();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.DATETIME_FORMAT);
-		LocalDateTime now = LocalDateTime.now();
-
-		// 加入回应内容
-		msgJson.put("sendtime", formatter.format(now));
-		Map<String, String> contents = message.getContents();
-		Set<String> keys = contents.keySet();
-
-		for (String key : keys) {
-			msgJson.put(key, contents.get(key));
-		}
-		
-		return msgJson.toString();
 	}
 }

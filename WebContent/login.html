@@ -204,19 +204,18 @@ fieldset {
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">
 $(function($) {
-	$("#login").submit(function(e){
+	$("#submit").click(function(){
 		var obj = {};
-		obj.ServiceName = "";
+		obj.ServiceName = "Login";
 		obj.username = $("#username").val();
 		obj.password = $("#password").val();
 
-		$.post("Service", { "Message": JSON.stringify(obj) },
-			function(data){
-				if ("000000000" == data.StateCode) {
-					alert("Success！");
-				} else {
-					alert("Fall code: " + data.StateCode);
-				}
+		$.post("Service", { "Message": JSON.stringify(obj) }, function(data){
+			if ("000000000" == data.StateCode) {
+				alert("Success！");
+			} else {
+				alert("Fall code: " + data.StateCode);
+			}
 	   	}, "json");
 	});	
 });
@@ -224,14 +223,14 @@ $(function($) {
 
 </head>
 <body>
-	<form id="login">
+	<form id="login" method="post">
 		<h1>DURKAUTO</h1>
 		<fieldset id="inputs">
 			<input id="username" type="text" placeholder="Username" autofocus required>
 			<input id="password" type="password" placeholder="Password" required>
 		</fieldset>
 		<fieldset id="actions">
-			<input type="submit" id="submit" value="Log in">
+			<input type="button" id="submit" value="Log in">
 			<a href="">Forgot your password?</a>
 			<a href="">Register</a>
 		</fieldset>

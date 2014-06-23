@@ -13,4 +13,6 @@ public class StateCode {
 	
 	public static final String FALL_UNKNOWN = "100000000";					//未知错误
 	public static final String FALL_LOGIN_INPUTERROR = "100001000";		//登陆-用户名或密码错误
+	
+	public static final String FALL_DATASERVICE_NOSTART = "101001000";		//登陆-用户名或密码错误
 }
