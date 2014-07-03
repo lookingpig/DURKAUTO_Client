@@ -1,0 +1,10 @@
+This license grants you the following, in using IcoMoon's icon package:
+
+1. You can use the icons and/or generated font(s) on a website.
+2. You can use the icons and/or generated font(s) in commercial products such as website templates or software.
+3. You can modify or alter all icons, in any way you wish.
+
+This license does not give you the right to reproduce, resell, copy or publish this product (IcoMoon).
+
+If you have any questions regarding this license, contact Keyamoon, the licensor, using the following email address:
+Keyamoon@gmail.com
