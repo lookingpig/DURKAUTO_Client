@@ -61,7 +61,7 @@
         <div class="container-fluid">
 
             <div class="loginContainer">
-                <form class="form-horizontal" action="dashboard.html" id="loginForm" >
+                <form class="form-horizontal" action="Service" id="loginForm" >
                     <div class="form-row row-fluid">
                         <div class="span12">
                             <div class="row-fluid">
@@ -92,8 +92,8 @@
                             <div class="row-fluid">
                                 <div class="form-actions">
                                 <div class="span12 controls">
-                                    <input type="checkbox" id="keepLoged" value="Value" class="styled" name="logged" /> Keep me logged in
-                                    <button type="submit" class="btn btn-info right" id="loginBtn"><span class="icon16 icomoon-icon-enter white"></span> Login</button>
+                                    <input type="checkbox" id="keepLoged" value="Value" class="styled" name="logged" />记住我的账号
+                                    <button type="submit" class="btn btn-info right" id="loginBtn"><span class="icon16 icomoon-icon-enter white"></span>登陆</button>
                                 </div>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
                     },
                     password: {
                         required: true,
-                        minlength: 6
+                        minlength: 4
                     }  
                 },
                 messages: {
@@ -142,6 +142,8 @@
             });
         });
     </script>
- 
+    
+    <!-- 加载需要使用的脚本 -->
+    <script type="text/javascript" src="js/durkauto.login.js"></script>
     </body>
 </html>
