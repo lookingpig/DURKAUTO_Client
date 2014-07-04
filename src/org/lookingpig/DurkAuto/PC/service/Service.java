@@ -121,9 +121,9 @@ public class Service extends HttpServlet {
 					msg.setSender(msgJson.getString(key));
 				} else if ("sendtime".equals(key)) {
 					msg.setSendTime(msgJson.getString(key));
-				} else {
-					msg.addContent(key, msgJson.getString(key));
 				}
+				
+				msg.addContent(key, msgJson.getString(key));
 			}
 		} catch (Exception e) {
 			logger.error("将JSON格式转换为Message时出错，原因：", e);

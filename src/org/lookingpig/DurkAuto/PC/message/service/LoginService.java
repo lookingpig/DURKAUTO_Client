@@ -39,7 +39,7 @@ public class LoginService implements MessageService {
 		
 		result = service.query("GetUserInfo", params);
 		
-		if (1 == result.size()) {
+		if (0 < result.size()) {
 			resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
 			resMsg.addContent("id", result.get(0).get(0));
 			resMsg.addContent("username", result.get(0).get(1));

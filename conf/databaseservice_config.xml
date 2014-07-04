@@ -3,7 +3,7 @@
 	<!-- 获得用户信息 -->
 	<sql>
 		<key>GetUserInfo</key>
-		<statement>select * from durkauto_user where username=? and password=?</statement>
+		<statement>select * from durkauto_user where username=? and password=password(?)</statement>
 		<parameter type="string">username</parameter>
 		<parameter type="string">password</parameter>
 	</sql>
