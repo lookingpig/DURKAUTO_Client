@@ -1,6 +1,10 @@
+//全局变量
+var WEBSOCKET_HOST = "ws://localhost:8080/DurkAutoClient/service/wsService";
+var wsClient;
+
 //当页面加载完成时调用
 $(document).ready(function() {
-	
+	wsClient = connectWS(WEBSOCKET_HOST);
 });
 	
 //当主菜单被选中时加载相应页面
@@ -11,10 +15,10 @@ function onMenuSelect(e) {
 
 	switch (servicename) {
 		case "appointment-inquiry" :
-		url = "appointment/inquiry.html";
+		url = "appointment/service_inquiry.html";
 		break;
 		case "appointment-define" :
-		url = "appointment/define.html";
+		url = "appointment/service_define.html";
 		break;
 	}
 

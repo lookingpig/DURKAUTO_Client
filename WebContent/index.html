@@ -220,33 +220,36 @@
 	    	<!-- 快捷栏 -->
     		<div class="shortcuts">
                 <ul>
-                    <li><a href="support.html" title="Support section" class="tip"><span class="icon24 icomoon-icon-support"></span></a></li>
-                    <li><a href="#" title="Database backup" class="tip"><span class="icon24 icomoon-icon-database"></span></a></li>
-                    <li><a href="charts.html" title="Sales statistics" class="tip"><span class="icon24 icomoon-icon-pie-2"></span></a></li>
-                    <li><a href="#" title="Write post" class="tip"><span class="icon24 icomoon-icon-pencil"></span></a></li>
+                    <li>
+                    	<a href="support.html" title="Support section" class="tip"><span class="icon24 icomoon-icon-support"></span></a>
+                    </li>
+                    <li>
+                    	<a href="#" title="Database backup" class="tip"><span class="icon24 icomoon-icon-database"></span></a>
+                    </li>
+                    <li>
+                    	<a href="charts.html" title="Sales statistics" class="tip"><span class="icon24 icomoon-icon-pie-2"></span></a>
+                    </li>
+                    <li>
+                    	<a href="#" title="Write post" class="tip"><span class="icon24 icomoon-icon-pencil"></span></a>
+                    </li>
                 </ul>
             </div><!-- End search -->  
-
-            <!-- 隐藏按钮 -->  
-	        <div class="collapseBtn leftbar">
-	             <a href="#" class="tipR" title="Hide Left Sidebar"><span class="icon12 minia-icon-layout"></span></a>
-	        </div>
 
             <!-- 菜单 -->
             <div class="sidenav">
 
                 <div class="sidebar-widget" style="margin: -1px 0 0 0;">
-                    <h5 class="title" style="margin-bottom:0">Navigation</h5>
+                    <h5 class="title" style="margin-bottom:0">导航栏</h5>
                 </div><!-- End .sidenav-widget -->
 
-                <div class="mainnav" style="width: 210px">
-                    <ul>
+                <div class="mainnav">
+                    <ul style="width: 210px">
                         <li>
                             <a href="#">
                             	<span class="icon16 icomoon-icon-list-view-2"></span>
                             	预约服务
                             </a>
-                            <ul class="sub">
+                            <ul class="sub" style="width: 210px">
                                 <li>
                                 	<a href="#" onclick="onMenuSelect(this);" name="appointment-inquiry">
                                 		<span class="icon16 icomoon-icon-arrow-right-2"></span>
@@ -272,6 +275,13 @@
 	    	<!--Responsive navigation button-->  
 	    	<div class="resBtn">
 	            <a href="#"><span class="icon16 minia-icon-list-3"></span></a>
+	        </div>
+
+	        <!-- 隐藏按钮 -->  
+	        <div class="collapseBtn leftbar">
+	            <a href="#" class="tipR" title="Hide Left Sidebar">
+	            	<span class="icon12 minia-icon-layout"></span>
+	            </a>
 	        </div>
 
 	        <!--Sidebar background-->
@@ -314,28 +324,24 @@
 	                </div><!-- End .heading-->
 
                 	<div class="row-fluid">
+    
+                        <div style="margin-bottom: 20px;">
+                            <ul id="main_tab" class="nav nav-tabs pattern">
+                                <li class="active">
+                                	<a href="#home" data-toggle="tab">Home</a>
+                                </li>
+                                <li><a href="#profile" data-toggle="tab">Profile</a></li>
+                            </ul>
 
-                        <div class="span6">
-                            
-                            <div style="margin-bottom: 20px;">
-                                <ul id="main_tab" class="nav nav-tabs pattern">
-                                    <li class="active">
-                                    	<a href="#home" data-toggle="tab">Home</a>
-                                    </li>
-                                    <li><a href="#profile" data-toggle="tab">Profile</a></li>
-                                </ul>
-
-                                <div class="tab-content" id="main_panel">
-                                    <div class="tab-pane fade in active" id="home">
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. </p>
-                                    </div>
-                                    <div class="tab-pane fade" id="profile">
-                                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. </p>
-                                    </div>
+                            <div class="tab-content" id="main_panel">
+                                <div class="tab-pane fade in active" id="home">
+                                    <p>Raw denim you probably haven't heard of them jean shorts Austin. </p>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. </p>
                                 </div>
                             </div>
-
-                        </div><!-- End .span6 -->  
+                        </div>
 
                     </div><!-- End .row-fluid -->
 	                
@@ -408,6 +414,7 @@
 	    <!-- 加载模板使用的脚本结束 -->
 
 	    <!-- 加载需要使用的脚本 -->
+	    <script type="text/javascript" src="js/ws.client.js"></script>
 	    <script type="text/javascript" src="js/durkauto.main.js"></script>
 	</body>
 </html>
