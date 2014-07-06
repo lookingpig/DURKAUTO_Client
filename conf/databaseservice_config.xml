@@ -7,4 +7,10 @@
 		<parameter type="string">username</parameter>
 		<parameter type="string">password</parameter>
 	</sql>
+	
+	<!-- 预约服务-查询服务类型 -->
+	<sql>
+		<key>GetAppointmentServiceType</key>
+		<statement>select * from durkauto_appointment_type</statement>
+	</sql>
 </database-services>

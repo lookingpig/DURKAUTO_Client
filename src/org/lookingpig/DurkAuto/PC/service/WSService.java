@@ -16,6 +16,8 @@ import javax.websocket.server.ServerEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lookingpig.DurkAuto.PC.conf.ClientConfig;
+import org.lookingpig.DurkAuto.PC.conf.StateCode;
+import org.lookingpig.Tools.Service.MessageService.MessageService;
 import org.lookingpig.Tools.Service.MessageService.MessageServiceFactory;
 import org.lookingpig.Tools.Service.MessageService.Model.Message;
 
@@ -86,11 +88,23 @@ public class WSService {
 			msg.setCaller(this);
 
 			// 交由消息服务处理
-			Message response = MessageServiceFactory.getFactory()
-					.getService(msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME)).service(msg);
-
+			String serviceName = msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME);
+			MessageService service = MessageServiceFactory.getFactory().getService(serviceName);
+			Message response = null;
+				
+			if (null == service) {
+				logger.warn("未找到所需的服务，服务名称：" + serviceName);
+				// 未找到指定服务
+				response = new Message();
+				response.addContent(StateCode.FLAG, StateCode.FALL_MESSAGESERVICE_NOTFOUND);
+			} else {
+				response = service.service(msg);
+			}
+			
 			// 有响应消息时回馈客户端
 			if (null != response) {
+				response.addContent(ClientConfig.MESSAGESERVICE_KEY_NAME, msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME));
+				response.addContent(ClientConfig.MESSAGESERVICE_TYPE, ClientConfig.MESSAGESERVICE_TYPE_RESPONSE);
 				sendMessage(response);
 			}
 		} catch (Exception e) {

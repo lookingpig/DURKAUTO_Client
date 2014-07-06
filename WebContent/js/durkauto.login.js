@@ -13,7 +13,7 @@ $(function($) {
             async : false,
             success : function(data) {
                 if ("000000000" == data.StateCode) {
-					location.href = "index.html";
+					location.href = "index.jsp";
 				} else {
 					alert("Fall code: " + data.StateCode);
 				}

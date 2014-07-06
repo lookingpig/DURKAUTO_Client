@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lookingpig.DurkAuto.PC.conf.StateCode;
@@ -41,11 +43,19 @@ public class LoginService implements MessageService {
 		
 		if (0 < result.size()) {
 			resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
-			resMsg.addContent("id", result.get(0).get(0));
-			resMsg.addContent("username", result.get(0).get(1));
-			resMsg.addContent("email", result.get(0).get(4));
-			resMsg.addContent("phone", result.get(0).get(5));
-			resMsg.addContent("realname", result.get(0).get(6));
+			resMsg.addContent("id", result.get(1).get(0));
+			resMsg.addContent("username", result.get(1).get(1));
+			resMsg.addContent("email", result.get(1).get(4));
+			resMsg.addContent("phone", result.get(1).get(5));
+			resMsg.addContent("realname", result.get(1).get(6));
+			
+			//将登陆信息存入会话中
+			HttpSession session = (HttpSession) message.getSession();
+			session.setAttribute("id", resMsg.getContent("id"));
+			session.setAttribute("username", resMsg.getContent("username"));
+			session.setAttribute("email", resMsg.getContent("email"));
+			session.setAttribute("phone", resMsg.getContent("phone"));
+			session.setAttribute("realname", resMsg.getContent("realname"));
 		} else {
 			resMsg.addContent(StateCode.FLAG, StateCode.FALL_LOGIN_INPUTERROR);
 			resMsg.addContent(StateCode.DESCRIBE_FLAG, "用户名或密码错误！");

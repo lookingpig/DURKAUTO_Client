@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -55,8 +58,6 @@
 	        document.documentElement.className += 'loadstate';
 	    </script>
 	    <!-- 加载模板使用的样式文件结束 -->
-
-
 	</head>
 
 	<body>
@@ -181,7 +182,7 @@
 	                        <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
 	                                <img src="images/avatar.jpg" alt="" class="image" /> 
-	                                <span class="txt">admin@supr.com</span>
+	                                <span class="txt"id="login_username">${username}</span>
 	                                <b class="caret"></b>
 	                            </a>
 	                            <ul class="dropdown-menu">
@@ -203,8 +204,8 @@
 
 	                        <!-- 退出 -->
 	                        <li>
-	                        	<a href="index.html">
-	                        		<span class="icon16 icomoon-icon-exit"></span> Logout
+	                        	<a href="#" onclick="onLogout();">
+	                        		<span class="icon16 icomoon-icon-exit"></span> 退出
 	                        	</a>
 	                        </li>
 	                    </ul>
@@ -251,13 +252,13 @@
                             </a>
                             <ul class="sub" style="width: 210px">
                                 <li>
-                                	<a href="#" onclick="onMenuSelect(this);" name="appointment-inquiry">
+                                	<a href="#" onclick="onMainMenuSelect(this);" name="appointment-inquiry">
                                 		<span class="icon16 icomoon-icon-arrow-right-2"></span>
                                 		服务查询
                                 	</a>
                                 </li>
                                 <li>
-                                	<a href="#" onclick="onMenuSelect(this);" name="appointment-define">
+                                	<a href="#" onclick="onMainMenuSelect(this);" name="appointment-define">
                                 		<span class="icon16 icomoon-icon-arrow-right-2"></span>
                                 		服务类型
                                 	</a>
@@ -415,6 +416,7 @@
 
 	    <!-- 加载需要使用的脚本 -->
 	    <script type="text/javascript" src="js/ws.client.js"></script>
+	    <script type="text/javascript" src="js/durkauto.messageservice.js"></script>
 	    <script type="text/javascript" src="js/durkauto.main.js"></script>
 	</body>
 </html>

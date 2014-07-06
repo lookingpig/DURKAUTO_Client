@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -53,7 +54,10 @@ public class Service extends HttpServlet {
 			logger.info("Message消息：" + msg);
 			msg.setCaller(this);
 			String serviceName = msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME);
-
+			
+			HttpSession session = request.getSession(true);
+			msg.setSession(session);
+			
 			//获得消息服务
 			MessageService service = MessageServiceFactory.getFactory().getService(serviceName);
 

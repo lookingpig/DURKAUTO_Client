@@ -29,4 +29,13 @@
 		<key>Login</key>
 		<class>org.lookingpig.DurkAuto.PC.message.service.LoginService</class>
 	</service>
+	
+	<!-- 注销服务 -->
+	<service>
+		<key>Logout</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.LogoutService</class>
+	</service>
+	
+	<!-- 预约服务 -->
+	<include>messageservice_appointment_config.xml</include>
 </message-services>

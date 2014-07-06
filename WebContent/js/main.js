@@ -1866,6 +1866,6 @@ $(document).ready(function() {
 	$("input, textarea, select").not('.nostyle').uniform();
 
 	//remove loadstate class from body and show the page
-	setTimeout('$("html").removeClass("loadstate")',500);
+	//setTimeout('$("html").removeClass("loadstate")',500);
 
 });
