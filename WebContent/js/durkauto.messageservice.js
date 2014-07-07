@@ -9,6 +9,9 @@ function messageService(message) {
 		case "Appointment_QueryServiceTypeService":
 			messageService_Appointment_QueryServiceTypeService(msgJSON);
 			break;
+		case "Appointment_AddServiceTypeService":
+			messageService_Appointment_AddServiceTypeService(msgJSON);
+			break;
 	}
 }
 
@@ -23,14 +26,21 @@ function messageService_OnLine(message) {
 function messageService_Appointment_QueryServiceTypeService(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
 		$("#appointment_ServiceType tbody tr").remove();
-		var data = JSON.parse(message.data);
+		var datas = message.Data;
 		var row = "";
 
-		for (var i=0; i<message.length; i++) {
+		for (var i=0; i<datas.length; i++) {
 			row += '<tr>';
 
-			for (var j=0; j<message[i].length; j++) {
-				row += '<td>' + message[i][j] + '</td>';
+			for (var j=0; j<datas[i].length; j++) {
+				
+				if (4 == j) {
+					row += '<td>' + datas[i][j] + '-';
+				} else if (5 == j) {
+					row += datas[i][j] + '</td>';
+				} else {
+					row += '<td>' + datas[i][j] + '</td>';
+				}
 			}
 
 			row += '<td><div class="controls center"><a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a> 		<a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a></div></td>';
@@ -41,3 +51,12 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 	}
 }
 
+//新增预约服务服务类型
+function messageService_Appointment_AddServiceTypeService(message) {
+	if (STATECODE_SUCCESS == message.StateCode) {
+		alert("添加预约服务类型成功。");
+		closePage();
+	} else {
+		alert("添加预约服务类型失败！");
+	}
+}

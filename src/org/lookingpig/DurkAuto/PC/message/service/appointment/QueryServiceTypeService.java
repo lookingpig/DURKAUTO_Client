@@ -3,7 +3,6 @@ package org.lookingpig.DurkAuto.PC.message.service.appointment;
 import java.util.List;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,14 +39,13 @@ public class QueryServiceTypeService implements MessageService {
 		if (0 < result.size()) {
 			//将返回数据打包成JSON
 			JSONArray resRow = new JSONArray();
-			JSONObject resCol = null;
-			List<String> title = result.get(0);
+			JSONArray resCol = null;
 			
 			for (int i=1; i<result.size(); i++) {
-				resCol = new JSONObject();
+				resCol = new JSONArray();
 				
-				for (int j=0; j<title.size(); j++) {
-					resCol.put(title.get(j), result.get(i).get(j));
+				for (int j=0; j<result.get(i).size(); j++) {
+					resCol.add(result.get(i).get(j));
 				}
 				
 				resRow.add(resCol);

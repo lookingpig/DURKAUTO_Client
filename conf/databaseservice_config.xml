@@ -13,4 +13,21 @@
 		<key>GetAppointmentServiceType</key>
 		<statement>select * from durkauto_appointment_type</statement>
 	</sql>
+	
+	<!-- 预约服务-新增服务类型 -->
+	<sql>
+		<key>AddAppointmentServiceType</key>
+		<statement>insert into durkauto_appointment_type values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
+		<parameter type="string">typeName</parameter>
+		<parameter type="int">parking</parameter>
+		<parameter type="int">businessDate</parameter>
+		<parameter type="string">businessHoursStart</parameter>
+		<parameter type="string">businessHoursEnd</parameter>
+		<parameter type="int">serviceTime</parameter>
+		<parameter type="int">reminderTime</parameter>
+		<parameter type="int">waitTime</parameter>
+		<parameter type="string">timeBasis</parameter>
+		<parameter type="bool">exclusive</parameter>
+		<parameter type="bool">enable</parameter>
+	</sql>
 </database-services>

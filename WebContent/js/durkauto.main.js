@@ -4,6 +4,7 @@ var STATECODE_SUCCESS = "000000000";
 var wsClient = null;
 var current_tab = null;
 var current_page = null;
+var current_sub_page = null;
 
 //当页面加载完成时调用
 $(document).ready(function() {
@@ -73,12 +74,11 @@ function openPage(tabname, pageName, url) {
 
 //在当前页签打开一个页面
 function openPageOnCurrentTab(url) {
-	var id = $("#" + current_page + " div").size() + "1";
+	var id = 1 + $("#" + current_page + " div").size();
 	$("#" + current_page).append('<div id="' + id + '"></div>');
 	$("#" + current_page + " #" + id).load(url);
 	$("#" + current_page).children("div").not("#" + id).hide();
-	alert($("#" + current_page).children("div").not("#" + id).size());
-	alert($("#" + current_page).children("div").size());
+	current_sub_page = id;
 }
 
 //当主页签被选中时调用
@@ -86,6 +86,7 @@ function onMainTabSelect(e) {
 	var id = $(e).attr("id");
 	current_tab = id;
 	current_page = id.substring(0, id.indexOf("_tab"));
+	current_sub_page = "1";
 }
 
 //关闭主标签栏

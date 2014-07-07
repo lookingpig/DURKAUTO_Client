@@ -7,4 +7,10 @@
 		<key>Appointment_QueryServiceTypeService</key>
 		<class>org.lookingpig.DurkAuto.PC.message.service.appointment.QueryServiceTypeService</class>
 	</service>
+	
+	<!-- 新增服务类型服务 -->
+	<service>
+		<key>Appointment_AddServiceTypeService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.appointment.AddServiceTypeService</class>
+	</service>
 </message-services>
