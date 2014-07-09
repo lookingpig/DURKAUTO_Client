@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.LogManager;
@@ -163,5 +165,28 @@ public class Service extends HttpServlet {
 		}
 		
 		return msgJson.toString();
+	}
+	
+	/**
+	 * 将数据打包成JSONArray格式
+	 * @param data 数据
+	 * @return JSONArray
+	 */
+	public static JSONArray baleDataToJSONArray(List<List<String>> data) {
+		//将返回数据打包成JSON
+		JSONArray resRow = new JSONArray();
+		JSONArray resCol = null;
+		
+		for (int i=1; i<data.size(); i++) {
+			resCol = new JSONArray();
+			
+			for (int j=0; j<data.get(i).size(); j++) {
+				resCol.add(data.get(i).get(j));
+			}
+			
+			resRow.add(resCol);
+		}
+		
+		return resRow;
 	}
 }

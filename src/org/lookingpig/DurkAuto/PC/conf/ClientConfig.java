@@ -18,6 +18,11 @@ public class ClientConfig {
 	public static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
 	
 	/**
+	 * 时间格式化时间
+	 */
+	public static final String TIME_FORMAT = "hh:mm";
+	
+	/**
 	 * 消息服务
 	 */
 	public static final String MESSAGESERVICE_KEY = "Message";
@@ -26,6 +31,11 @@ public class ClientConfig {
 	 * 消息服务索引名称
 	 */
 	public static final String MESSAGESERVICE_KEY_NAME = "ServiceName";
+	
+	/**
+	 * 数据服务索引名称
+	 */
+	public static final String DATASERVICE_KEY_NAME = "DataServiceName";
 	
 	/**
 	 * 消息服务消息类型

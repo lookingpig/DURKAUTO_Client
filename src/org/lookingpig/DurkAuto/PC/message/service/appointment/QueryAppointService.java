@@ -13,16 +13,16 @@ import org.lookingpig.Tools.Service.MessageService.MessageService;
 import org.lookingpig.Tools.Service.MessageService.Model.Message;
 
 /**
- * 预约服务-查询服务类型服务
+ * 查询预约服务
  * @author Pig
  *
  */
-public class QueryServiceTypeService implements MessageService {
-	private static final Logger logger = LogManager.getLogger(QueryServiceTypeService.class);
+public class QueryAppointService implements MessageService {
+	private static final Logger logger = LogManager.getLogger(QueryAppointService.class);
 	
 	@Override
 	public Message service(Message message) {
-		logger.info("接收到一条预约服务-查询服务类型消息：" + message);
+		logger.info("接收到一条预约服务-查询预约消息：" + message);
 		
 		Message resMsg = new Message();
 		DatabaseService service = DatabaseService.getService();
@@ -32,8 +32,8 @@ public class QueryServiceTypeService implements MessageService {
 			resMsg.addContent(StateCode.FALL_DATASERVICE_NOSTART, "数据服务没有正常启动！");
 			return resMsg; 
 		}
-		
-		List<List<String>> result = service.query("Appointment_GetServiceType", null);
+				
+		List<List<String>> result = service.query("Appointment_GetAppoint", null);
 		resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
 		
 		if (0 < result.size()) {

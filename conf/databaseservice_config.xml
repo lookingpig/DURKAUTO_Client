@@ -8,15 +8,28 @@
 		<parameter type="string">password</parameter>
 	</sql>
 	
-	<!-- 预约服务-查询服务类型 -->
+	<!-- 预约服务-查询所有服务类型 -->
 	<sql>
-		<key>GetAppointmentServiceType</key>
+		<key>Appointment_GetServiceType</key>
 		<statement>select * from durkauto_appointment_type</statement>
+	</sql>
+	
+	<!-- 预约服务-查询所有服务类型 -->
+	<sql>
+		<key>Appointment_GetSpecialServiceType</key>
+		<statement>select * from durkauto_appointment_type where id=?</statement>
+		<parameter type="int">typeID</parameter>
+	</sql>
+	
+	<!-- 预约服务-查询可用预约类型 -->
+	<sql>
+		<key>Appointment_GetAppointType</key>
+		<statement>select id, type_name from durkauto_appointment_type where enable=true</statement>
 	</sql>
 	
 	<!-- 预约服务-新增服务类型 -->
 	<sql>
-		<key>AddAppointmentServiceType</key>
+		<key>Appointment_AddServiceType</key>
 		<statement>insert into durkauto_appointment_type values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
 		<parameter type="string">typeName</parameter>
 		<parameter type="int">parking</parameter>
@@ -29,5 +42,31 @@
 		<parameter type="string">timeBasis</parameter>
 		<parameter type="bool">exclusive</parameter>
 		<parameter type="bool">enable</parameter>
+	</sql>
+	
+	<!-- 预约服务-新增服务类型 -->
+	<sql>
+		<key>Appointment_DelServiceType</key>
+		<statement>delete from durkauto_appointment_type where id=?</statement>
+		<parameter type="int">id</parameter>
+	</sql>
+	
+	<!-- 预约服务-查询预约 -->
+	<sql>
+		<key>Appointment_GetAppoint</key>
+		<statement>
+			select a.id, a.service_type, b.type_name, a.appoint_date, a.appoint_time, a.arrival_time, a.reminder_time, a.service_state
+			from durkauto_appointment_service as a
+			left join durkauto_appointment_type as b on  a.service_type = b.id
+		</statement>
+	</sql>
+	
+	<!-- 预约服务-新增服务类型 -->
+	<sql>
+		<key>Appointment_AddAppoint</key>
+		<statement>insert into durkauto_appointment_service values(null, ?, now(), ?, null, ?, 1)</statement>
+		<parameter type="int">serviceType</parameter>
+		<parameter type="string">appointTime</parameter>
+		<parameter type="string">reminderTime</parameter>		
 	</sql>
 </database-services>

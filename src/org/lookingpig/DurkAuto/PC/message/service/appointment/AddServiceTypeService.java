@@ -44,7 +44,7 @@ public class AddServiceTypeService implements MessageService {
 		parames.put("exclusive", message.getContent("exclusive"));
 		parames.put("enable", message.getContent("enable"));
 		
-		boolean success = service.execute("AddAppointmentServiceType", parames);
+		boolean success = service.execute("Appointment_AddServiceType", parames);
 		
 		if (success) {
 			resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);

@@ -120,3 +120,11 @@ function onWSError(evt) {
 function onWSMessage(message) {
 	messageService(message);
 }
+
+//格式化时间
+function formatTime(time) {
+	var df = new SimpleDateFormat();
+	df.applyPattern("HH:mm"); 
+	var date = new Date(time);
+	return df.format(date);
+}

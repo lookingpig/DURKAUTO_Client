@@ -2,9 +2,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>预约列表</title>
 </head>
 <body>
+	<div class="row-fluid">
+        <div class="box">
+            <div class="content noPad">
+                <table class="responsive table table-bordered" id="appointment_appointlist">
+                    <thead>
+                      <tr>
+                        <th>序号</th>
+                        <th>服务类型</th>
+                        <th>预约日期</th>
+                        <th>预约时间</th>
+                        <th>抵达时间</th>
+                        <th>提醒时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="8">无数据</td>
+                      </tr>
+                    </tbody>
+                </table>                
+            </div>
+        </div><!-- End .box -->
 
+        <button class="btn" onclick="showAddAppointPanel();">
+            <span class="icon16 icomoon-icon-plus-2"></span> 预约
+        </button>
+    </div><!-- End .row-fluid -->
+
+    <!-- 加载需要使用的脚本 -->
+    <script type="text/javascript" src="js/durkauto.appointment.inquiry.js"></script>
 </body>
 </html>
