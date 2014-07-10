@@ -45,7 +45,7 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 				for (var j=0; j<datas[i].length; j++) {
 					switch (j) {
 						case 0:
-							row += '<td id="' + datas[i][j] + '">' + i + '</td>';
+							row += '<td id="' + datas[i][j] + '">' + (i + 1) + '</td>';
 							break;
 						case 4:
 							row += '<td>' + datas[i][j] + '-';
@@ -130,8 +130,11 @@ function messageService_Appointment_QueryAppointService(message) {
 						case 4:
 							row += '<td>' + formatTime(datas[i][j-1] + " " + datas[i][j]) + '</td>';
 							break;
+						case 7:
+							row += '<td>' + getAppointStateText(datas[i][j]) + '</td>';
+							break;
 						default:
-							row += '<td>' + datas[i][j] + '</td>';
+							row += '<td>' + formatText(datas[i][j]) + '</td>';
 							break;
 					}
 				}

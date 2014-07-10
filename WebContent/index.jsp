@@ -417,6 +417,7 @@
 	    <!-- 加载需要使用的脚本 -->
 	    <script type="text/javascript" src="js/ws.client.js"></script>
 	    <script type="text/javascript" src="js/durkauto.messageservice.js"></script>
+	    <script type="text/javascript" src="js/durkauto.date.js"></script>
 	    <script type="text/javascript" src="js/durkauto.main.js"></script>
 	</body>
 </html>

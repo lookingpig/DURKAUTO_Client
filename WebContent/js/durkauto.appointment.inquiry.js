@@ -14,3 +14,21 @@ function sendGetAppointServiceList() {
 	obj.ServiceName = "Appointment_QueryAppointService";
 	wsClient.send(JSON.stringify(obj));
 }
+
+//获得预约状态文本
+function getAppointStateText(state) {
+	switch (state) {
+		case '1':
+			return '预约';
+			break;
+		case '2':
+			return '抵达';
+			break;
+		case '3':
+			return '撤销';
+			break;
+		case '4':
+			return '过期';
+			break;
+	}
+}

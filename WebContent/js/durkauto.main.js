@@ -123,8 +123,19 @@ function onWSMessage(message) {
 
 //格式化时间
 function formatTime(time) {
-	var df = new SimpleDateFormat();
-	df.applyPattern("HH:mm"); 
 	var date = new Date(time);
-	return df.format(date);
+	return date.Format("hh:mm");
+}
+
+//格式化文本
+function formatText(text) {
+	switch (text) {
+		case 'null':
+		case null:
+			return '';
+			break;
+		default:
+			return text;
+			break;
+	}
 }
