@@ -50,6 +50,8 @@ $(document).ready(function() {
 		wsClient.send(JSON.stringify(obj));
         return false;
 	});	
+
+	$("input, textarea, select").not('.nostyle').uniform();
 });
 
 //关闭当前页面

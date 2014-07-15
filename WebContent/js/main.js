@@ -496,7 +496,7 @@ $(document).ready(function() {
             $('.elastic').elastic();
         });
     }
-*/
+	*/
 	//------------- Input limiter -------------//
 	if ($('textarea').hasClass('limit')) {
 		$('.limit').inputlimiter({

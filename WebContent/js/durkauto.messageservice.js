@@ -37,6 +37,9 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 		$("#appointment_ServiceType tbody tr").remove();
 		var datas = message.Data;
 		var row = "";
+		var now = new Date();
+		var date = now.getFullYear() + "-" + (1 + now.getMonth()) + "-" + (1 + now.getDate()) + " ";
+
 
 		if (0 < datas.length) {
 			for (var i=0; i<datas.length; i++) {
@@ -47,11 +50,23 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 						case 0:
 							row += '<td id="' + datas[i][j] + '">' + (i + 1) + '</td>';
 							break;
+						case 3:
+							row += '<td>' + getBusinessDateText(datas[i][j]) + '</td>';
+							break;
 						case 4:
-							row += '<td>' + datas[i][j] + '-';
+							row += '<td>' + formatTime(date + datas[i][j]) + '-';
 							break;
 						case 5:
-							row += datas[i][j] + '</td>';
+							row += formatTime(date + datas[i][j]) + '</td>';
+							break;
+						case 9:
+							row += '<td>' + getTimeBasisText(datas[i][j]) + '</td>';
+							break;
+						case 10:
+							row += '<td>' + getExclusiveText(datas[i][j]) + '</td>';
+							break;
+						case 11:
+							row += '<td>' + getEnableText(datas[i][j]) + '</td>';
 							break;
 						default:
 							row += '<td>' + datas[i][j] + '</td>';
