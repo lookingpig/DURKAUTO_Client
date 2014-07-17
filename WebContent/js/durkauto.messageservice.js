@@ -33,6 +33,9 @@ function messageService(message) {
 //默认更新服务
 function messageService_DefaultUpdateService(message) {
 	switch (message.SubServiceName) {
+		case "Appointment_TypeOperate":
+			messageService_Appointment_TypeOperate(message);
+			break;
 		case "Appointment_AppointOperate":
 			messageService_Appointment_AppointOperate(message);
 			break;
@@ -55,7 +58,7 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 		var row = "";
 		var now = new Date();
 		var date = now.getFullYear() + "-" + (1 + now.getMonth()) + "-" + (1 + now.getDate()) + " ";
-
+		var state;
 
 		if (datas && 0 < datas.length) {
 			for (var i=0; i<datas.length; i++) {
@@ -82,7 +85,8 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 							row += '<td>' + getExclusiveText(datas[i][j]) + '</td>';
 							break;
 						case 11:
-							row += '<td>' + getEnableText(datas[i][j]) + '</td>';
+							state = datas[i][j];
+							row += '<td state="' + datas[i][j] + '">' + getEnableText(datas[i][j]) + '</td>';
 							break;
 						default:
 							row += '<td>' + datas[i][j] + '</td>';
@@ -92,6 +96,16 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 
 				row += '<td>';
 				row += '<div class="controls center">';
+
+				if ("1" == state) {
+					row += '<a href="#" title="禁用" class="tip" onclick="changeTypeState(this, false);">';
+					row += '<span class="icon12 icon-remove"></span>';
+				} else {
+					row += '<a href="#" title="启用" class="tip" onclick="changeTypeState(this, true);">';
+					row += '<span class="icon12 icon-ok"></span>';
+				}
+
+				row += '</a>';
 				row += '<a href="#" title="编辑" class="tip" onclick="">';
 				row += '<span class="icon12 icomoon-icon-pencil"></span>';
 				row += '</a>';
@@ -148,6 +162,16 @@ function messageService_Appointment_DelServiceTypeService(message) {
 	} else {
 		alert("删除服务类型失败！");
 	}
+}
+
+//服务类型操作
+function messageService_Appointment_TypeOperate(message) {
+	if (STATECODE_SUCCESS == message.StateCode) {
+		alert("操作成功。");
+		sendGetServiceTypeList();
+	} else {
+		alert("操作失败！");
+	}	
 }
 
 //查询预约
@@ -228,7 +252,7 @@ function messageService_Appointment_AddAppointService(message) {
 	}
 }
 
-//预约抵达
+//预约操作
 function messageService_Appointment_AppointOperate(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
 		alert("操作成功。");

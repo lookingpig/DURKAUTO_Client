@@ -44,11 +44,23 @@
 		<parameter type="bool">enable</parameter>
 	</sql>
 	
-	<!-- 预约服务-新增服务类型 -->
+	<!-- 预约服务-删除服务类型 -->
 	<sql>
 		<key>Appointment_DelServiceType</key>
 		<statement>delete from durkauto_appointment_type where id=?</statement>
 		<parameter type="int">id</parameter>
+	</sql>
+	
+	<!-- 预约服务-修改服务类型启用状态 -->
+	<sql>
+		<key>Appointment_ChangeTypeState</key>
+		<statement>
+			update durkauto_appointment_type 
+			set enable=? 
+			where id=?
+		</statement>
+		<parameter type="bool">enable</parameter>
+		<parameter type="int">typeID</parameter>	
 	</sql>
 	
 	<!-- 预约服务-查询预约 -->

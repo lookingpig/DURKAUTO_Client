@@ -19,6 +19,16 @@ function delServiceType(e) {
 	sendDelServiceType(id);
 }
 
+//改变服务类型状态
+function changeTypeState(e, state) {
+	var currentState = "1" == $(e).parent().parent().parent().children("td").eq(10).attr("state") ? true : false;
+
+	if (currentState != state) {
+		var id = $(e).parent().parent().parent().children("td").eq(0).attr("id");
+		sendTypeOperateMessage(id, state);
+	}
+}
+
 //发送查询已有服务类型消息
 function sendGetServiceTypeList() {
 	var obj = {};
@@ -31,6 +41,18 @@ function sendDelServiceType(id) {
 	var obj = {};
 	obj.ServiceName = "Appointment_DelServiceTypeService";
 	obj.id = id;
+	wsClient.send(JSON.stringify(obj));	
+}
+
+//发送服务类型操作消息
+function sendTypeOperateMessage(id, state) {
+	var obj = {};
+	obj.ServiceName = "DefaultUpdateService";
+	obj.SubServiceName = "Appointment_TypeOperate";
+	obj.DataServiceName = "Appointment_ChangeTypeState";
+	obj.typeID = id;
+	obj.enable = state;
+
 	wsClient.send(JSON.stringify(obj));	
 }
 
