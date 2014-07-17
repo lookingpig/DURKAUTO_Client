@@ -16,8 +16,7 @@ function eidtServiceType() {
 //删除服务类型
 function delServiceType(e) {
 	var id = $(e).parent().parent().parent().children("td").eq(0).attr("id");
-	alert(id);
-	//sendDelServiceType(id);
+	sendDelServiceType(id);
 }
 
 //发送查询已有服务类型消息

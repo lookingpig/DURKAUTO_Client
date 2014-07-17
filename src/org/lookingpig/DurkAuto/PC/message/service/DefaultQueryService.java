@@ -1,4 +1,4 @@
-package org.lookingpig.DurkAuto.PC.message.service.appointment;
+package org.lookingpig.DurkAuto.PC.message.service;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class DefaultQueryService implements MessageService {
 			return resMsg; 
 		}
 		
-		List<List<String>> result = service.query(message.getContent(ClientConfig.DATASERVICE_KEY_NAME), null);
+		List<List<String>> result = service.query(message.getContent(ClientConfig.DATASERVICE_KEY_NAME), message.getContents());
 		resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
 		
 		if (0 < result.size()) {

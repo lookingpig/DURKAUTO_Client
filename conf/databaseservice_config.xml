@@ -61,12 +61,25 @@
 		</statement>
 	</sql>
 	
-	<!-- 预约服务-新增服务类型 -->
+	<!-- 预约服务-新增预约 -->
 	<sql>
 		<key>Appointment_AddAppoint</key>
 		<statement>insert into durkauto_appointment_service values(null, ?, now(), ?, null, ?, 1)</statement>
 		<parameter type="int">serviceType</parameter>
 		<parameter type="string">appointTime</parameter>
 		<parameter type="string">reminderTime</parameter>		
+	</sql>
+	
+	<!-- 预约服务-预约抵达 -->
+	<sql>
+		<key>Appointment_AppointOperate</key>
+		<statement>
+			update durkauto_appointment_service 
+			set arrival_time=?, service_state=? 
+			where id=?
+		</statement>
+		<parameter type="string">arrivalTime</parameter>
+		<parameter type="int">appointState</parameter>
+		<parameter type="int">appointID</parameter>	
 	</sql>
 </database-services>

@@ -122,8 +122,17 @@ function onWSMessage(message) {
 }
 
 //格式化时间
-function formatTime(time) {
-	var date = new Date(time);
+function formatTime(time, date) {
+	if (!time || null == time || "" == time) {
+		return "";
+	}
+
+	if (!date) {
+		var now = new Date();
+		date = now.getFullYear() + "-" + (1 + now.getMonth()) + "-" + (1 + now.getDate());
+	}
+
+	var date = new Date(date + " " + time);
 	return date.Format("hh:mm");
 }
 

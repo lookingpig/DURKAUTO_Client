@@ -105,6 +105,12 @@ public class WSService {
 			if (null != response) {
 				response.addContent(ClientConfig.MESSAGESERVICE_KEY_NAME, msg.getContent(ClientConfig.MESSAGESERVICE_KEY_NAME));
 				response.addContent(ClientConfig.MESSAGESERVICE_TYPE, ClientConfig.MESSAGESERVICE_TYPE_RESPONSE);
+				
+				//子服务类型
+				if (msg.getContents().containsKey(ClientConfig.MESSAGESERVICE_SUB_KEY_NAME)) {
+					response.addContent(ClientConfig.MESSAGESERVICE_SUB_KEY_NAME, msg.getContent(ClientConfig.MESSAGESERVICE_SUB_KEY_NAME));
+				}
+				
 				sendMessage(response);
 			}
 		} catch (Exception e) {

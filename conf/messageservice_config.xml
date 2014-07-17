@@ -36,6 +36,18 @@
 		<class>org.lookingpig.DurkAuto.PC.message.service.LogoutService</class>
 	</service>
 	
+	<!-- 默认查询服务 -->
+	<service>
+		<key>DefaultQueryService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.DefaultQueryService</class>
+	</service>
+	
+	<!-- 默认更新服务 -->
+	<service>
+		<key>DefaultUpdateService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.DefaultUpdateService</class>
+	</service>
+	
 	<!-- 预约服务 -->
 	<include>messageservice_appointment_config.xml</include>
 </message-services>

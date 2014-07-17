@@ -32,6 +32,8 @@ public class ClientConfig {
 	 */
 	public static final String MESSAGESERVICE_KEY_NAME = "ServiceName";
 	
+	public static final String MESSAGESERVICE_SUB_KEY_NAME = "SubServiceName";
+	
 	/**
 	 * 数据服务索引名称
 	 */

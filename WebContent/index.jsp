@@ -61,7 +61,9 @@
 	</head>
 
 	<body>
-
+		<div id="qLoverlay"></div>
+    	<div id="qLbar"></div>
+    	
 		<!-- 标题栏 -->
 		<div id="header">
 

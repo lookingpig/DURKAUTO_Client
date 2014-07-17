@@ -11,7 +11,7 @@
 	<!-- 查询可用预约类型服务 -->
 	<service>
 		<key>Appointment_QueryAppointTypeService</key>
-		<class>org.lookingpig.DurkAuto.PC.message.service.appointment.DefaultQueryService</class>
+		<class>org.lookingpig.DurkAuto.PC.message.service.DefaultQueryService</class>
 	</service>
 	
 	<!-- 新增服务类型服务 -->
