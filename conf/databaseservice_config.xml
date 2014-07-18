@@ -11,13 +11,20 @@
 	<!-- 预约服务-查询所有服务类型 -->
 	<sql>
 		<key>Appointment_GetServiceType</key>
-		<statement>select * from durkauto_appointment_type</statement>
+		<statement>
+			select * 
+			from durkauto_appointment_type
+		</statement>
 	</sql>
 	
 	<!-- 预约服务-查询所有服务类型 -->
 	<sql>
 		<key>Appointment_GetSpecialServiceType</key>
-		<statement>select * from durkauto_appointment_type where id=?</statement>
+		<statement>
+			select * 
+			from durkauto_appointment_type 
+			where id=?
+		</statement>
 		<parameter type="int">typeID</parameter>
 	</sql>
 	
@@ -53,13 +60,33 @@
 	
 	<!-- 预约服务-修改服务类型启用状态 -->
 	<sql>
-		<key>Appointment_ChangeTypeState</key>
+		<key>Appointment_UpdateType</key>
 		<statement>
 			update durkauto_appointment_type 
 			set enable=? 
+			?{, type_name=?}
+			?{, parking=?}
+			?{, business_date=?}
+			?{, business_hours_start=?}
+			?{, business_hours_end=?}
+			?{, service_time=?}
+			?{, reminder_time=?}
+			?{, Wait_time=?}
+			?{, time_basis=?}
+			?{, exclusive=?}
 			where id=?
 		</statement>
 		<parameter type="bool">enable</parameter>
+		<parameter type="string" option="true">typeName</parameter>
+		<parameter type="int" option="true">parking</parameter>
+		<parameter type="int" option="true">businessDate</parameter>
+		<parameter type="string" option="true">businessHoursStart</parameter>
+		<parameter type="string" option="true">businessHoursEnd</parameter>
+		<parameter type="int" option="true">serviceTime</parameter>
+		<parameter type="int" option="true">reminderTime</parameter>
+		<parameter type="int" option="true">waitTime</parameter>
+		<parameter type="string" option="true">timeBasis</parameter>
+		<parameter type="bool" option="true">exclusive</parameter>
 		<parameter type="int">typeID</parameter>	
 	</sql>
 	

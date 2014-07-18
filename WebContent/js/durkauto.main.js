@@ -10,6 +10,8 @@ var current_sub_page = null;
 $(document).ready(function() {
 	if (null == wsClient) {
 		wsClient = connectWS(WEBSOCKET_HOST);
+	} else {
+		setTimeout('$("html").removeClass("loadstate")', 50);
 	}
 });
 
@@ -27,7 +29,7 @@ function onLogout() {
         success : function(data) {
             if (STATECODE_SUCCESS == data.StateCode) {
 				wsClient.close();
-				wsClient = null;
+				sessionStorage.wsClient = null;
 				location.href = "login.html";
 			} else {
 				alert("退出登录失败！代码：" + data.StateCode);
@@ -148,3 +150,14 @@ function formatText(text) {
 			break;
 	}
 }
+
+//获得请求参数
+function getRequestParam(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
+	var r = window.location.search.substr(1).match(reg); 
+	
+	if (r != null) 
+		return unescape(r[2]); 
+	return null; 
+} 
+

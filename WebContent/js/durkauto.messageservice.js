@@ -3,6 +3,12 @@ function messageService(message) {
 	var msgJSON = JSON.parse(message.data);
 	
 	switch (msgJSON.ServiceName) {
+		case "DefaultUpdateService":
+			messageService_DefaultUpdateService(msgJSON);
+			break;
+		case "DefaultQueryService":
+			messageService_DefaultQueryService(msgJSON);
+			break;
 		case "OnLine":
 			messageService_OnLine(msgJSON);
 			break;
@@ -24,9 +30,6 @@ function messageService(message) {
 		case "Appointment_DelServiceTypeService":
 			messageService_Appointment_DelServiceTypeService(msgJSON);
 			break;
-		case "DefaultUpdateService":
-			messageService_DefaultUpdateService(msgJSON);
-			break;
 	}
 }
 
@@ -39,13 +42,25 @@ function messageService_DefaultUpdateService(message) {
 		case "Appointment_AppointOperate":
 			messageService_Appointment_AppointOperate(message);
 			break;
+		case "Appointment_TypeUpdate":
+			messageService_Appointment_TypeUpdate(message);
+			break;
+	}
+}
+
+//默认查询服务
+function messageService_DefaultQueryService(message) {
+	switch (message.SubServiceName) {
+		case "Appointment_GetTypeInfo":
+			messageService_Appointment_GetTypeInfo(message);
+			break;
 	}
 }
 
 //上线服务
 function messageService_OnLine(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
-		setTimeout('$("html").removeClass("loadstate")',50);
+		setTimeout('$("html").removeClass("loadstate")', 50);
 	}
 }
 
@@ -106,7 +121,7 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 				}
 
 				row += '</a>';
-				row += '<a href="#" title="编辑" class="tip" onclick="">';
+				row += '<a href="#" title="编辑" class="tip" onclick="eidtServiceType(this);">';
 				row += '<span class="icon12 icomoon-icon-pencil"></span>';
 				row += '</a>';
 				row += '<a href="#" title="删除" class="tip" onclick="delServiceType(this);">';
@@ -172,6 +187,52 @@ function messageService_Appointment_TypeOperate(message) {
 	} else {
 		alert("操作失败！");
 	}	
+}
+
+//获得服务类型信息
+function messageService_Appointment_GetTypeInfo(message) {
+	if (STATECODE_SUCCESS == message.StateCode && message.Data && 1 == message.Data.length) {
+		$("#type_name").val(message.Data[0][1]);
+		$("#parking").val(message.Data[0][2]);
+
+		for (var i=0; i<7; i++) {
+			if (Math.pow(2, i) & message.Data[0][3]) {
+				$("input[name='business_date']").eq(i).attr("checked", "checked");
+			} else {
+				$("input[name='business_date']").eq(i).removeAttr("checked");
+			}
+		}
+
+		$("#business_time_start").val(formatTime(message.Data[0][4]));
+		$("#business_time_end").val(formatTime(message.Data[0][5]));
+		$("#service_time").val(message.Data[0][6]);
+		$("#reminder_time").val(message.Data[0][7]);
+		$("#Wait_time").val(message.Data[0][8]);
+		$("#time_basis").val(message.Data[0][9]);
+		
+		if ("0" == message.Data[0][10]) {
+			$("#exclusive").click();
+		}
+
+		if ("0" == message.Data[0][11]) {
+			$("#enable").click();
+		}
+
+		updateComponent();
+	} else {
+		alert("获取类型信息失败，无法编辑！");
+	}
+}
+
+//更新预约服务类型
+function messageService_Appointment_TypeUpdate(message) {
+	if (STATECODE_SUCCESS == message.StateCode) {
+		alert("更新预约服务类型成功。");
+		closePage();
+		setTimeout('sendGetServiceTypeList()', 50);
+	} else {
+		alert("更新预约服务类型失败！");
+	}
 }
 
 //查询预约

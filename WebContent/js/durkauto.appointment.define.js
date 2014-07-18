@@ -9,8 +9,12 @@ function showAddServiceTypePanel() {
 }
 
 //编辑服务类型
-function eidtServiceType() {
-
+function eidtServiceType(e) {
+	var obj = {};
+	obj.id = $(e).parent().parent().parent().children("td").eq(0).attr("id");
+	sessionStorage.parameters = JSON.stringify(obj);
+	
+	showAddServiceTypePanel();
 }
 
 //删除服务类型
@@ -49,7 +53,7 @@ function sendTypeOperateMessage(id, state) {
 	var obj = {};
 	obj.ServiceName = "DefaultUpdateService";
 	obj.SubServiceName = "Appointment_TypeOperate";
-	obj.DataServiceName = "Appointment_ChangeTypeState";
+	obj.DataServiceName = "Appointment_UpdateType";
 	obj.typeID = id;
 	obj.enable = state;
 
