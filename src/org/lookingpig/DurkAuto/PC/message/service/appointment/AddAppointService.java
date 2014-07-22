@@ -59,10 +59,10 @@ public class AddAppointService implements MessageService {
 			
 			switch (timeBasis) {
 			case "h":
-				reminderTime.minus(reminder, ChronoUnit.HOURS);
+				reminderTime = reminderTime.minus(reminder, ChronoUnit.HOURS);
 				break;
 			case "m":
-				reminderTime.minus(reminder, ChronoUnit.MINUTES);
+				reminderTime = reminderTime.minus(reminder, ChronoUnit.MINUTES);
 				break;
 			}
 			
