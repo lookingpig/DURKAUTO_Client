@@ -14,13 +14,32 @@ $(document).ready(function() {
 	
 	$("#appointForm").submit(function(){
 		var obj = {};
-		obj.ServiceName = "Appointment_AddAppointService";
+
+		if ("" == $("#appointID").val()) {
+			obj.ServiceName = "Appointment_AddAppointService";
+		} else {
+			obj.ServiceName = "DefaultUpdateService";
+			obj.SubServiceName = "Appointment_EditAppoint";
+			obj.DataServiceName = "Appointment_EditAppoint";
+			obj.appointID = $("#appointID").val();
+		}
+		
 		obj.serviceType = $("#appoint_type").val();
 		obj.appointTime = $("#appoint_time").val();
 		
 		wsClient.send(JSON.stringify(obj));
         return false;
 	});	
+
+	//编辑模式
+	if (sessionStorage.parameters) {
+		var param = JSON.parse(sessionStorage.parameters);
+		$("#appointID").val(param.id);
+		$("button[type='submit']").text("修改");
+		sendGetAppointInfoMessage(param.id);
+
+		sessionStorage.removeItem("parameters");
+	}
 });
 
 //关闭当前页面
@@ -35,4 +54,15 @@ function sendGetServiceTypeSelect() {
 	obj.ServiceName = "Appointment_QueryAppointTypeService";
 	obj.DataServiceName = "Appointment_GetAppointType";
 	wsClient.send(JSON.stringify(obj));
+}
+
+//发送获取预约信息消息
+function sendGetAppointInfoMessage(id) {
+	var obj = {};
+	obj.ServiceName = "DefaultQueryService";
+	obj.SubServiceName = "Appointment_GetAppointInfo";
+	obj.DataServiceName = "Appointment_GetAppoint";
+	obj.appointID = id;
+
+	wsClient.send(JSON.stringify(obj));	
 }

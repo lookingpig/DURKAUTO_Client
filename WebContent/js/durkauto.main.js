@@ -161,3 +161,18 @@ function getRequestParam(name) {
 	return null; 
 } 
 
+//获得下拉框模式选项
+function getSelectModelOption(model) {
+	var option = '';
+
+	switch (model) {
+		case "ALL":
+			option += '<option value="-1" selected="selected">全部</option>';
+			break;
+	}
+
+	return option;
+}
+
+//当下拉框加载完毕时调用
+function onSelectLoadComplete(name){}

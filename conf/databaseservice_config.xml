@@ -94,10 +94,31 @@
 	<sql>
 		<key>Appointment_GetAppoint</key>
 		<statement>
-			select a.id, a.service_type, b.type_name, a.appoint_date, a.appoint_time, a.arrival_time, a.reminder_time, a.service_state
+			select a.id
+				, a.service_type
+				, b.type_name
+				, a.appoint_date
+				, a.appoint_time
+				, a.arrival_time
+				, a.reminder_time
+				, a.service_state
 			from durkauto_appointment_service as a
 			left join durkauto_appointment_type as b on  a.service_type = b.id
+			where 1=1
+				?{and a.id=?}
+				?{and a.service_type=?}
+				?{and a.service_state=?}
+				?{and a.appoint_date=?}
+				?{and a.appoint_time&gt;=?}
+				?{and a.appoint_time&lt;=?}
+			order by a.appoint_date desc, a.appoint_time
 		</statement>
+		<parameter type="int" option="true">appointID</parameter>
+		<parameter type="int" option="true">serviceType</parameter>
+		<parameter type="int" option="true">serviceState</parameter>
+		<parameter type="string" option="true">appointDate</parameter>
+		<parameter type="string" option="true">appointTimeStart</parameter>
+		<parameter type="string" option="true">appointTimeEnd</parameter>
 	</sql>
 	
 	<!-- 预约服务-新增预约 -->
@@ -107,6 +128,19 @@
 		<parameter type="int">serviceType</parameter>
 		<parameter type="string">appointTime</parameter>
 		<parameter type="string">reminderTime</parameter>		
+	</sql>
+	
+	<!-- 预约服务-编辑预约 -->
+	<sql>
+		<key>Appointment_EditAppoint</key>
+		<statement>
+			update durkauto_appointment_service 
+			set service_type=?, appoint_time=?, appoint_date=now() 
+			where id=?
+		</statement>
+		<parameter type="int">serviceType</parameter>
+		<parameter type="string">appointTime</parameter>
+		<parameter type="int">appointID</parameter>	
 	</sql>
 	
 	<!-- 预约服务-预约抵达 -->

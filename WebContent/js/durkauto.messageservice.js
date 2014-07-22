@@ -21,9 +21,6 @@ function messageService(message) {
 		case "Appointment_QueryAppointTypeService":
 			messageService_Appointment_QueryAppointTypeService(msgJSON);
 			break;
-		case "Appointment_QueryAppointService":
-			messageService_Appointment_QueryAppointService(msgJSON);
-			break;
 		case "Appointment_AddAppointService":
 			messageService_Appointment_AddAppointService(msgJSON);
 			break;
@@ -45,14 +42,23 @@ function messageService_DefaultUpdateService(message) {
 		case "Appointment_TypeUpdate":
 			messageService_Appointment_TypeUpdate(message);
 			break;
+		case "Appointment_EditAppoint":
+			messageService_Appointment_EditAppoint(message)
+			break;
 	}
 }
 
 //默认查询服务
 function messageService_DefaultQueryService(message) {
 	switch (message.SubServiceName) {
+		case "Appointment_QueryAppointService":
+			messageService_Appointment_QueryAppointService(message);
+			break;
 		case "Appointment_GetTypeInfo":
 			messageService_Appointment_GetTypeInfo(message);
+			break;
+		case "Appointment_GetAppointInfo":
+			messageService_Appointment_GetAppointInfo(message);
 			break;
 	}
 }
@@ -132,7 +138,7 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 				row += '</tr>';
 			}
 		} else {
-			row = '<td colspan="12" style="text-align: center">无数据</td>';
+			row = '<tr><td colspan="12" style="text-align: center">无数据</td></tr>';
 		}
 
 		$("#appointment_ServiceType tbody").append(row);
@@ -157,15 +163,18 @@ function messageService_Appointment_QueryAppointTypeService(message) {
 		var datas = message.Data;
 		var option = "";
 
+		option += getSelectModelOption($("#appoint_type").attr("model"));
+
 		if (0 < datas.length) {
 			for (var i=0; i<datas.length; i++) {
 				option += '<option value="' + datas[i][0] + '">' + datas[i][1] + '</option>';
 			}
 		} else {
-			option += '<option value="0">无数据</option>';
+			option += '<option value="-2">无数据</option>';
 		}
 
 		$("#appoint_type").append(option);
+		onSelectLoadComplete("appoint_type");
 	}
 }
 
@@ -285,9 +294,9 @@ function messageService_Appointment_QueryAppointService(message) {
 					row += '<span class="icon12 icomoon-icon-remove"></span>';
 					row += '</a>';
 
-					row += '<a href="#" title="修改" class="tip" onclick="">';
-				row += '<span class="icon12 icomoon-icon-pencil"></span>';
-				row += '</a>';
+					row += '<a href="#" title="修改" class="tip" onclick="editAppoint(this);">';
+					row += '<span class="icon12 icomoon-icon-pencil"></span>';
+					row += '</a>';
 				}
 
 				row += '</div>';
@@ -295,7 +304,7 @@ function messageService_Appointment_QueryAppointService(message) {
 				row += '</tr>';
 			}
 		} else {
-			row = '<td colspan="8" style="text-align: center">无数据</td>';
+			row = '<tr><td colspan="8" style="text-align: center">无数据</td></tr>';
 		}
 
 		$("#appointment_appointlist tbody").append(row);
@@ -320,5 +329,26 @@ function messageService_Appointment_AppointOperate(message) {
 		sendGetAppointServiceList();
 	} else {
 		alert("操作失败！");
+	}
+}
+
+//查询预约信息
+function messageService_Appointment_GetAppointInfo(message) {
+	if (STATECODE_SUCCESS == message.StateCode && message.Data && 1 == message.Data.length) {
+		$("#appoint_type").val(message.Data[0][1]);
+		$("#appoint_time").val(formatTime(message.Data[0][4]));
+	} else {
+		alert("获取预约信息失败，无法编辑！");
+	}
+}
+
+//更新预约
+function messageService_Appointment_EditAppoint(message) {
+	if (STATECODE_SUCCESS == message.StateCode) {
+		alert("更新预约成功。");
+		closePage();
+		setTimeout('sendGetAppointServiceList()', 50);
+	} else {
+		alert("更新预约失败！");
 	}
 }
