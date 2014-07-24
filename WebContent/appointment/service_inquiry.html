@@ -7,12 +7,15 @@
 <body>
 	<div class="row-fluid">
         <div class="box">
+            <div class="title">
+            </div>
+
             <div class="content noPad">
-                <div class="left" style="margin-left: 10px">
+                <div class="left" style="margin-left: 10px; margin-top: 10px">
                     <label>预约类型：<select id="appoint_type" model="ALL"></select></label>
                 </div>
 
-                <div class="left" style="margin-left: 10px">
+                <div class="left" style="margin-left: 10px; margin-top: 10px">
                     <label>预约状态：
                         <select id="appointState">
                             <option value="-1" selected="selected">全部</option>
@@ -24,11 +27,17 @@
                     </label>
                 </div>
                 
-                <div class="left" style="margin-left: 10px">
+                <div class="left" style="margin-left: 10px; margin-top: 10px">
                     <label>预约日期：<input type="text" id="appointDate" style="width: 75px"/></label>
                 </div>
 
-                <div class="left" style="margin-left: 10px">
+                <div class="left" style="margin-left: 10px; margin-top: 20px">
+                    <a href="#" title="清除" class="tip" onclick="$('#appointDate').val('');">
+                        <span class="icon12 icon-remove"></span>
+                    </a>
+                </div>
+
+                <div class="left" style="margin-left: 10px; margin-top: 10px">
                     <label>
                         预约时间：
                         <input id="appointTimeStart" type="text" name="time" autocomplete="off" style="width: 55px" />
@@ -37,13 +46,13 @@
                     </label>
                 </div>
 
-                <div class="left" style="margin-left: 30px; margin-top: 10px">
+                <div class="left" style="margin-left: 30px; margin-top: 20px">
                     <a href="#" title="搜索" class="tip" onclick="sendGetAppointServiceList();">
                         <span class="icon12 icon-search"></span>
                     </a>
                 </div> 
 
-                <div class="left" style="margin-left: 10px; margin-top: 10px">
+                <div class="left" style="margin-left: 10px; margin-top: 20px">
                     <a href="#" title="重置" class="tip" onclick="resetSearch();">
                         <span class="icon12 icon-repeat"></span>
                     </a>

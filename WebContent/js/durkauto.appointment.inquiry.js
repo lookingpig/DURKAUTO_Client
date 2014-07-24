@@ -11,6 +11,8 @@ $(document).ready(function() {
 		});
 	}
 
+	$("#appointDate").val(formatDate(new Date()));
+
 	//默认预约起始时间
 	$('#appointTimeStart').timeEntry({
 		show24Hours: true,

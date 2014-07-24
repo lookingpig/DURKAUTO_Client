@@ -19,3 +19,41 @@ Date.prototype.Format = function (fmt) { //author: meizz
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+//减去天数
+function minusDay(date, day){
+    if ("string" == typeof date) {
+        date = new Date(date);
+    }
+    
+    date = date.valueOf();
+    date = date - day * 24 * 60 * 60 * 1000;
+    date = new Date(date);
+    return date;
+}
+
+//增加天数
+function plusDay(date, day) {
+    if ("string" == typeof date) {
+        date = new Date(date);
+    }
+    
+    date = date.valueOf();
+    date = date + day * 24 * 60 * 60 * 1000;
+    date = new Date(date);
+    return date;   
+}
+
+//计算差几天
+function betweenDay(date1, date2) {
+    if ("string" == typeof date1) {
+        date1 = new Date(date1);
+    }
+
+    if ("string" == typeof date2) {
+        date2 = new Date(date2);
+    }
+
+    var day = 1 + parseInt(Math.abs(date1.getTime() - date2.getTime()) / (24 * 60 * 60 * 1000));
+    return day;
+}

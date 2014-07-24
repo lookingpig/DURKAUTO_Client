@@ -60,6 +60,9 @@ function messageService_DefaultQueryService(message) {
 		case "Appointment_GetAppointInfo":
 			messageService_Appointment_GetAppointInfo(message);
 			break;
+		case "Statistics_QueryAppointVisit":
+			messageService_Statistics_QueryAppointVisit(message);
+			break;
 	}
 }
 
@@ -350,5 +353,44 @@ function messageService_Appointment_EditAppoint(message) {
 		setTimeout('sendGetAppointServiceList()', 50);
 	} else {
 		alert("更新预约失败！");
+	}
+}
+
+//查询预约服务访问量
+function messageService_Statistics_QueryAppointVisit(message) {
+	if (STATECODE_SUCCESS == message.StateCode) {
+		var start = new Date(searchOption.startTime).getTime();
+		var end = new Date(searchOption.endTime).getTime();
+		var step = 24 * 60 * 60 * 1000;
+		
+		var datas = message.Data;
+		var index = 0;
+		var date = datas && index < datas.length ? new Date(datas[index][0]).getTime() : 0;
+
+		var total = new Array();
+		var arrive = new Array();
+		var cancel = new Array();
+		var overdue = new Array();
+
+		while (start <= end) {
+			
+			if (date == start) {
+				total.push([start, datas[index][1]]);
+				arrive.push([start, datas[index][2]]);
+				cancel.push([start, datas[index][3]]);
+				overdue.push([start, datas[index][4]]);
+
+				date = ++index < datas.length ? new Date(datas[index][0]).getTime() : 0;
+			} else {
+				total.push([start, 0]);
+				arrive.push([start, 0]);
+				cancel.push([start, 0]);
+				overdue.push([start, 0]);
+			}
+
+			start += step;
+		}
+
+		showChart(total, arrive, cancel, overdue);
 	}
 }

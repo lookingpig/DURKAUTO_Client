@@ -49,11 +49,14 @@ function onMainMenuSelect(e) {
 
 	switch (pageName) {
 		case "appointment-inquiry" :
-		url = "appointment/service_inquiry.html";
-		break;
+			url = "appointment/service_inquiry.html";
+			break;
 		case "appointment-define" :
-		url = "appointment/service_define.html";
-		break;
+			url = "appointment/service_define.html";
+			break;
+		case "statistics-appointVisit":
+			url = "statistics/appoint_visit_quantity.html";
+			break;
 	}
 
 	if ("" != url) {
@@ -123,6 +126,15 @@ function onWSMessage(message) {
 	messageService(message);
 }
 
+//向服务端发送消息
+function sendMessage(message) {
+	if ("string" != typeof message) {
+		message = JSON.stringify(message);
+	}
+
+	wsClient.send(message);
+}
+
 //格式化时间
 function formatTime(time, date) {
 	if (!time || null == time || "" == time) {
@@ -136,6 +148,15 @@ function formatTime(time, date) {
 
 	var date = new Date(date + " " + time);
 	return date.Format("hh:mm");
+}
+
+//格式化日期
+function formatDate(date) {
+	if ("string" == typeof date) {
+		date = new Date(date);
+	}
+
+	return date.Format("yyyy-MM-dd");
 }
 
 //格式化文本

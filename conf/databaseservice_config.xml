@@ -155,4 +155,27 @@
 		<parameter type="int">appointState</parameter>
 		<parameter type="int">appointID</parameter>	
 	</sql>
+	
+	<!-- 查询预约服务访问量 -->
+	<sql>
+		<key>Statistics_GetAppointVisit</key>
+		<statement>
+			select appoint_date
+				, count(*) as total
+				, count(case when service_state='2' then service_state end) as arrive
+				, count(case when service_state='3' then service_state end) as cancel
+				, count(case when service_state='4' then service_state end) as overdue
+			from durkauto_appointment_service
+			where 1=1
+				?{and appoint_date&gt;=?}
+				?{and appoint_date&lt;=?}
+				?{and service_type=?}
+			group by appoint_date
+			order by appoint_date
+		</statement>
+		<parameter type="string" option="true">startTime</parameter>
+		<parameter type="string" option="true">endTime</parameter>
+		<parameter type="int" option="true">appointType</parameter>
+	</sql>
+	
 </database-services>

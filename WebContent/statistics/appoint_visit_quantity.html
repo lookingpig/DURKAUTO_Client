@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>预约列表</title>
+</head>
+<body>
+	<div class="span10">
+		<div class="left">
+            <label>
+                统计日期：
+                <input type="text" id="startTime" style="width: 75px"/>
+                --
+                <input type="text" id="endTime" style="width: 75px"/>
+            </label>
+        </div>
+
+        <div class="left" style="margin-left: 10px">
+            <label>预约类型：<select id="appoint_type" model="ALL"></select></label>
+        </div>
+
+        <div class="left" style="margin-left: 30px; margin-top: 10px">
+            <a href="#" title="统计" class="tip" onclick="statistics();">
+                <span class="icon12 icon-search"></span>
+            </a>
+        </div> 
+
+        <div class="left" style="margin-left: 10px; margin-top: 10px">
+            <a href="#" title="重置" class="tip" onclick="resetSearch();">
+                <span class="icon12 icon-repeat"></span>
+            </a>
+        </div> 
+	</div>
+
+	<div class="span10">
+		
+		<div class="box chart">
+			<div class="title">
+	        </div>
+
+	        <div class="content">
+	           	<div class="lines-chart" style="height: 230px;width:100%;">
+
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- 加载需要使用的脚本 -->
+    <script type="text/javascript" src="js/durkauto.statistics.appointvisit.js"></script>
+</body>
+</html>

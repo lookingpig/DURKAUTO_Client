@@ -71,24 +71,25 @@
 	            <div class="navbar-inner">
 	              <div class="container-fluid">
 	              	<!-- Logo -->
-	                <a class="brand" href="dashboard.html">
+	                <a class="brand" href="index.jsp">
 	                	<img src="images/logo.jpg" alt="logo" width="90px" height="auto">
 	                </a>
 
 	                <div class="nav-no-collapse">
 
 	                	<!-- 快捷方式 -->
-	                    <ul class="nav">
+	                    <!-- <ul class="nav"> -->
+
 	                    	<!-- 操作台 -->
-	                        <li class="active">
+	                        <!-- <li class="active">
 	                        	<a href="dashboard.html">
 	                        		<span class="icon16 icomoon-icon-screen-2"></span> 
 	                        		Dashboard
 	                        	</a>
-	                        </li>
+	                        </li> -->
 
 	                        <!-- 设置 -->
-	                        <li class="dropdown">
+	                        <!-- <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	                                <span class="icon16 icomoon-icon-cog"></span> Settings
 	                                <b class="caret"></b>
@@ -108,10 +109,10 @@
 	                                    </ul>
 	                                </li>
 	                            </ul>
-	                        </li>
+	                        </li> -->
 
 	                        <!-- 消息 -->
-	                        <li class="dropdown">
+	                        <!-- <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	                                <span class="icon16 icomoon-icon-mail-3"></span>Messages 
 	                                <span class="notification">0</span>
@@ -140,13 +141,13 @@
 	                                </li>
 	                            </ul>
 	                        </li>
-	                    </ul>
+	                    </ul> -->
 	                  
 	                  	<!-- 登陆 -->
 	                    <ul class="nav pull-right usernav">
 
 	                    	<!-- 通知 -->
-	                        <li class="dropdown">
+	                        <!-- <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	                                <span class="icon16 icomoon-icon-bell-2"></span>
 	                                <span class="notification">0</span>
@@ -178,7 +179,7 @@
 	                                    </ul>
 	                                </li>
 	                            </ul>
-	                        </li>
+	                        </li> -->
 
 	                        <!-- 用户 -->
 	                        <li class="dropdown">
@@ -246,13 +247,13 @@
                 </div><!-- End .sidenav-widget -->
 
                 <div class="mainnav">
-                    <ul style="width: 210px">
+                    <ul style="">
                         <li>
                             <a href="#">
                             	<span class="icon16 icomoon-icon-list-view-2"></span>
                             	预约服务
                             </a>
-                            <ul class="sub" style="width: 210px">
+                            <ul class="sub" style="width: 209px">
                                 <li>
                                 	<a href="#" onclick="onMainMenuSelect(this);" name="appointment-inquiry">
                                 		<span class="icon16 icomoon-icon-arrow-right-2"></span>
@@ -263,6 +264,21 @@
                                 	<a href="#" onclick="onMainMenuSelect(this);" name="appointment-define">
                                 		<span class="icon16 icomoon-icon-arrow-right-2"></span>
                                 		服务类型
+                                	</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                            	<span class="icon16 icomoon-icon-list-view-2"></span>
+                            	统计报表
+                            </a>
+                            <ul class="sub" style="width: 209px">
+                                <li>
+                                	<a href="#" onclick="onMainMenuSelect(this);" name="statistics-appointVisit">
+                                		<span class="icon16 icomoon-icon-arrow-right-2"></span>
+                                		预约服务访问量
                                 	</a>
                                 </li>
                             </ul>
@@ -296,7 +312,7 @@
         			<!-- 标题栏 -->
         			<div class="heading">
 
-	                    <h3>Dashboard</h3>                    
+	                    <h3></h3>                    
 
 	                    <div class="resBtnSearch">
 	                        <a href="#"><span class="icon16 icomoon-icon-search-3"></span></a>
@@ -312,7 +328,7 @@
 	                    </div><!-- End search -->
 	                    
 	                    <ul class="breadcrumb">
-	                        <li>You are here:</li>
+	                        <li>当前页：</li>
 	                        <li>
 	                            <a href="#" class="tip" title="back to dashboard">
 	                                <span class="icon16 icomoon-icon-screen-2"></span>
@@ -321,7 +337,7 @@
 	                                <span class="icon16 icomoon-icon-arrow-right-2"></span>
 	                            </span>
 	                        </li>
-	                        <li class="active">Dashboard</li>
+	                        <li class="active">首页</li>
 	                    </ul>
 
 	                </div><!-- End .heading-->
@@ -331,17 +347,13 @@
                         <div style="margin-bottom: 20px;">
                             <ul id="main_tab" class="nav nav-tabs pattern">
                                 <li class="active">
-                                	<a href="#home" data-toggle="tab">Home</a>
+                                	<a href="#home" data-toggle="tab">首页</a>
                                 </li>
-                                <li><a href="#profile" data-toggle="tab">Profile</a></li>
                             </ul>
 
                             <div class="tab-content" id="main_panel">
                                 <div class="tab-pane fade in active" id="home">
-                                    <p>Raw denim you probably haven't heard of them jean shorts Austin. </p>
-                                </div>
-                                <div class="tab-pane fade" id="profile">
-                                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. </p>
+                                    <p></p>
                                 </div>
                             </div>
                         </div>
