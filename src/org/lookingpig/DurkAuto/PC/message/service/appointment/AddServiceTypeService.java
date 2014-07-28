@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lookingpig.DurkAuto.PC.conf.ClientConfig;
 import org.lookingpig.DurkAuto.PC.conf.StateCode;
 import org.lookingpig.Tools.Database.DatabaseService;
 import org.lookingpig.Tools.Service.MessageService.MessageService;
@@ -38,13 +39,19 @@ public class AddServiceTypeService implements MessageService {
 		parames.put("businessHoursStart", message.getContent("businessHoursStart"));
 		parames.put("businessHoursEnd", message.getContent("businessHoursEnd"));
 		parames.put("serviceTime", message.getContent("serviceTime"));
+		parames.put("minTime", message.getContent("minTime"));
 		parames.put("reminderTime", message.getContent("reminderTime"));
 		parames.put("waitTime", message.getContent("waitTime"));
+		parames.put("timeScale", message.getContent("timeScale"));
 		parames.put("timeBasis", message.getContent("timeBasis"));
 		parames.put("exclusive", message.getContent("exclusive"));
 		parames.put("enable", message.getContent("enable"));
 		
-		boolean success = service.execute("Appointment_AddServiceType", parames);
+		if (message.getContents().containsKey("typeID")) {
+			parames.put("typeID", message.getContent("typeID"));
+		}
+		
+		boolean success = service.execute(message.getContent(ClientConfig.DATASERVICE_KEY_NAME), parames);
 		
 		if (success) {
 			resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);

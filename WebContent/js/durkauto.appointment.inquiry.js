@@ -52,9 +52,9 @@ function editAppoint(e) {
 	showAddAppointPanel();
 }
 
-//预约抵达
+//预约操作
 function appointOperate(e, state) {
-	var currentState = $(e).parent().parent().parent().children("td").eq(6).attr("state");
+	var currentState = $(e).parent().parent().parent().children("td").eq(7).attr("state");
 
 	if ("1" == currentState)  {
 		var id = $(e).parent().parent().parent().children("td").eq(0).attr("id");

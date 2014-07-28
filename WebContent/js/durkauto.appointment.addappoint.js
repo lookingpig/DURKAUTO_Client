@@ -17,15 +17,18 @@ $(document).ready(function() {
 
 		if ("" == $("#appointID").val()) {
 			obj.ServiceName = "Appointment_AddAppointService";
+			obj.SubServiceName = "Appointment_AddAppoint";
+			obj.DataServiceName = "Appointment_AddAppoint";
 		} else {
-			obj.ServiceName = "DefaultUpdateService";
+			obj.ServiceName = "Appointment_AddAppointService";
 			obj.SubServiceName = "Appointment_EditAppoint";
 			obj.DataServiceName = "Appointment_EditAppoint";
 			obj.appointID = $("#appointID").val();
 		}
 		
-		obj.serviceType = $("#appoint_type").val();
-		obj.appointTime = $("#appoint_time").val();
+		var element = getCurrentPage();
+		obj.serviceType = element.find("#appoint_type").val();
+		obj.appointTime = element.find("#appoint_time").val();
 		
 		wsClient.send(JSON.stringify(obj));
         return false;
@@ -41,6 +44,10 @@ $(document).ready(function() {
 		sessionStorage.removeItem("parameters");
 	}
 });
+
+function onSelectLoadComplete(name) {
+
+}
 
 //关闭当前页面
 function closePage() {

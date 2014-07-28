@@ -32,9 +32,11 @@ $(document).ready(function() {
 
 		if ("" == $("#type_ID").val()) {
 			obj.ServiceName = "Appointment_AddServiceTypeService";
+			obj.SubServiceName = "Appointment_AddServiceType";
+			obj.DataServiceName = "Appointment_AddServiceType";
 		} else {
-			obj.ServiceName = "DefaultUpdateService";
-			obj.SubServiceName = "Appointment_TypeUpdate";
+			obj.ServiceName = "Appointment_AddServiceTypeService";
+			obj.SubServiceName = "Appointment_UpdateServiceType";
 			obj.DataServiceName = "Appointment_UpdateType";
 			obj.typeID = $("#type_ID").val();
 		}
@@ -45,8 +47,10 @@ $(document).ready(function() {
 		obj.businessHoursStart = $("#business_time_start").val();
 		obj.businessHoursEnd = $("#business_time_end").val();
 		obj.serviceTime = $("#service_time").val();
+		obj.minTime = $("#min_time").val();
 		obj.reminderTime = $("#reminder_time").val();
 		obj.waitTime = $("#Wait_time").val();
+		obj.timeScale = $("#time_scale").val();
 		obj.timeBasis = $("#time_basis").val();
 		obj.exclusive = "checked" == $("#exclusive").attr("checked") ? true : false;
 		obj.enable = "checked" == $("#enable").attr("checked") ? true : false;

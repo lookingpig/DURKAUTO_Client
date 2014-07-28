@@ -1,5 +1,6 @@
 package org.lookingpig.DurkAuto.PC.message.service.appointment;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -11,9 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lookingpig.DurkAuto.PC.conf.ClientConfig;
 import org.lookingpig.DurkAuto.PC.conf.StateCode;
+import org.lookingpig.DurkAuto.PC.timetask.CheckAppointTimeOutTask;
 import org.lookingpig.Tools.Database.DatabaseService;
 import org.lookingpig.Tools.Service.MessageService.MessageService;
 import org.lookingpig.Tools.Service.MessageService.Model.Message;
+import org.lookingpig.Tools.TimingTask.Scheduler;
 
 /**
  * 添加预约服务
@@ -52,17 +55,23 @@ public class AddAppointService implements MessageService {
 			resMsg.addContent(StateCode.FLAG, StateCode.FALL_APPOINTMENT_SERVICETYPE_DISABLE);
 		} else {
 			//计算提醒时间
-			String timeBasis = result.get(1).get(9);
-			long reminder = Long.parseLong(result.get(1).get(7));
+			String timeBasis = result.get(1).get(result.get(0).indexOf("time_basis"));
+			long reminder = Long.parseLong(result.get(1).get(result.get(0).indexOf("reminder_time")));
+			long wait = Long.parseLong(result.get(1).get(result.get(0).indexOf("Wait_time")));
+			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ClientConfig.TIME_FORMAT);
-			LocalTime reminderTime = LocalTime.parse(message.getContent("appointTime")); 
+			LocalTime appointTime = LocalTime.parse(message.getContent("appointTime"));
+			LocalTime reminderTime = null;
+			LocalTime timeoutTime = null;
 			
 			switch (timeBasis) {
 			case "h":
-				reminderTime = reminderTime.minus(reminder, ChronoUnit.HOURS);
+				reminderTime = appointTime.minus(reminder, ChronoUnit.HOURS);
+				timeoutTime = appointTime.plus(wait, ChronoUnit.HOURS);
 				break;
 			case "m":
-				reminderTime = reminderTime.minus(reminder, ChronoUnit.MINUTES);
+				reminderTime = appointTime.minus(reminder, ChronoUnit.MINUTES);
+				timeoutTime = appointTime.plus(wait, ChronoUnit.MINUTES);
 				break;
 			}
 			
@@ -71,11 +80,26 @@ public class AddAppointService implements MessageService {
 			parames.put("serviceType", message.getContent("serviceType"));
 			parames.put("appointTime", message.getContent("appointTime"));
 			parames.put("reminderTime", formatter.format(reminderTime));
+			parames.put("timeoutTime", formatter.format(timeoutTime));
 			
-			boolean success = service.execute("Appointment_AddAppoint", parames);
+			if (message.getContents().containsKey("appointID")) {
+				parames.put("appointID", message.getContent("appointID"));
+			}
+			
+			boolean success = service.execute(message.getContent(ClientConfig.DATASERVICE_KEY_NAME), parames);
 			
 			if (success) {
 				resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
+				
+				//定时更改服务状态
+				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(ClientConfig.DATE_FORMAT);
+				DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(ClientConfig.TIME_LONG_FORMAT);
+				StringBuffer datetime = new StringBuffer(); 
+				datetime.append(dateFormat.format(LocalDate.now()));
+				datetime.append(" ");
+				datetime.append(timeFormat.format(timeoutTime));
+				
+				Scheduler.getInstance().addJob(datetime.toString(), CheckAppointTimeOutTask.getTask());
 			} else {
 				resMsg.addContent(StateCode.FLAG, StateCode.FALL_APPOINTMENT_ADD);
 				logger.warn("新增预约失败！参数: " + parames);

@@ -107,25 +107,21 @@ function showChart(total, arrive, cancel, overdue) {
 			{
 				label: "使用量", 
 				data: total,
-				lines: {fillColor: "#A1DEEE"},
 				points: {fillColor: "#C9EEF7"}
 			}, 
 			{
 				label: "抵达量", 
 				data: arrive,
-				lines: {fillColor: "#9889FE"},
 				points: {fillColor: "#BAB0FE"}
 			}, 
 			{
 				label: "撤销量", 
 				data: cancel,
-				lines: {fillColor: "#EAFF9C"},
 				points: {fillColor: "#F4FDD3"}
 			}, 
 			{
 				label: "过期量", 
 				data: overdue,
-				lines: {fillColor: "#FF7C7C"},
 				points: {fillColor: "#FFB9B9"}
 			}
 		], options);

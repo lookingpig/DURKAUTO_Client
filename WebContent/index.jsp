@@ -247,7 +247,7 @@
                 </div><!-- End .sidenav-widget -->
 
                 <div class="mainnav">
-                    <ul style="">
+                    <ul>
                         <li>
                             <a href="#">
                             	<span class="icon16 icomoon-icon-list-view-2"></span>

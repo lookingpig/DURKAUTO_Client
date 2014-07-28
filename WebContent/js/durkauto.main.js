@@ -70,19 +70,26 @@ function openPage(tabname, pageName, url) {
 		//在这里如果已经存在该页面则切换
 		$("#main_tab #" + pageName + "_tab").click();
 	} else {
-		$("#main_tab").append('<li><a href="#' + pageName + '" data-toggle="tab" id="' + pageName + '_tab" onclick="onMainTabSelect(this);">' + tabname + ' <span class=" icon-remove" onclick="closeMainTab(this);"></span></a></li>');
-		$("#main_panel").append('<div class="tab-pane fade" id="' + pageName + '"><div id="1"></div></div>');
-		$("#" + pageName).load(url);
+		var tab = '<li>';
+		tab += '<a id="' + pageName + '_tab" href="#' + pageName + '" data-toggle="tab" onclick="onMainTabSelect(this);">';
+		tab += tabname
+		tab += ' <span onclick="closeMainTab(this);"><span class="icon12 icon-remove"></span></span>';
+		tab += '</a></li>';
+
+		$("#main_tab").append(tab);
+		$("#main_panel").append('<div class="tab-pane fade" id="' + pageName + '"><div id="sub_1"></div></div>');
+		$("#" + pageName + " #sub_1").load(url);
 		$("#main_tab #" + pageName + "_tab").click();
 	}
 }
 
 //在当前页签打开一个页面
 function openPageOnCurrentTab(url) {
-	var id = 1 + $("#" + current_page + " div").size();
-	$("#" + current_page).append('<div id="' + id + '"></div>');
-	$("#" + current_page + " #" + id).load(url);
-	$("#" + current_page).children("div").not("#" + id).hide();
+	var element = $("#" + current_page);
+	var id = "sub_" + (1 + element.children("div").size());
+	element.append('<div id="' + id + '"></div>');
+	element.children("div[id=" + id + "]").load(url);
+	element.children("div").not("#" + id).hide();
 	current_sub_page = id;
 }
 
@@ -91,7 +98,12 @@ function onMainTabSelect(e) {
 	var id = $(e).attr("id");
 	current_tab = id;
 	current_page = id.substring(0, id.indexOf("_tab"));
-	current_sub_page = "1";
+	current_sub_page = "sub_1";
+}
+
+//获得当前页面对象
+function getCurrentPage() {
+	return $("#" + current_page + " div[id=" + current_sub_page + "]");
 }
 
 //关闭主标签栏

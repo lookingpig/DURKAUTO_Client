@@ -39,12 +39,6 @@ function messageService_DefaultUpdateService(message) {
 		case "Appointment_AppointOperate":
 			messageService_Appointment_AppointOperate(message);
 			break;
-		case "Appointment_TypeUpdate":
-			messageService_Appointment_TypeUpdate(message);
-			break;
-		case "Appointment_EditAppoint":
-			messageService_Appointment_EditAppoint(message)
-			break;
 	}
 }
 
@@ -102,13 +96,13 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 						case 5:
 							row += formatTime(datas[i][j], date) + '</td>';
 							break;
-						case 9:
+						case 11:
 							row += '<td>' + getTimeBasisText(datas[i][j]) + '</td>';
 							break;
-						case 10:
+						case 12:
 							row += '<td>' + getExclusiveText(datas[i][j]) + '</td>';
 							break;
-						case 11:
+						case 13:
 							state = datas[i][j];
 							row += '<td state="' + datas[i][j] + '">' + getEnableText(datas[i][j]) + '</td>';
 							break;
@@ -141,7 +135,7 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 				row += '</tr>';
 			}
 		} else {
-			row = '<tr><td colspan="12" style="text-align: center">无数据</td></tr>';
+			row = '<tr><td colspan="14" style="text-align: center">无数据</td></tr>';
 		}
 
 		$("#appointment_ServiceType tbody").append(row);
@@ -151,22 +145,32 @@ function messageService_Appointment_QueryServiceTypeService(message) {
 //新增预约服务服务类型
 function messageService_Appointment_AddServiceTypeService(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
-		alert("添加预约服务类型成功。");
+		if ("Appointment_AddServiceType" == message.SubServiceName) {
+			alert("添加预约服务类型成功。");	
+		} else {
+			alert("更新预约服务类型成功。");
+		}
+		
 		closePage();
 		setTimeout('sendGetServiceTypeList()', 50);
 	} else {
-		alert("添加预约服务类型失败！");
+		if ("Appointment_AddServiceType" == message.SubServiceName) {
+			alert("添加预约服务类型失败！");
+		} else {
+			alert("更新预约服务类型失败！");
+		}
 	}
 }
 
 //查询可用预约类型
 function messageService_Appointment_QueryAppointTypeService(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
-		$("#appoint_type option").remove();
+		var element = $("#" + current_page + " #" + current_sub_page).find("#appoint_type");
+		element.children("option").remove();
 		var datas = message.Data;
 		var option = "";
 
-		option += getSelectModelOption($("#appoint_type").attr("model"));
+		option += getSelectModelOption(element.attr("model"));
 
 		if (0 < datas.length) {
 			for (var i=0; i<datas.length; i++) {
@@ -176,7 +180,7 @@ function messageService_Appointment_QueryAppointTypeService(message) {
 			option += '<option value="-2">无数据</option>';
 		}
 
-		$("#appoint_type").append(option);
+		element.append(option);
 		onSelectLoadComplete("appoint_type");
 	}
 }
@@ -236,17 +240,6 @@ function messageService_Appointment_GetTypeInfo(message) {
 	}
 }
 
-//更新预约服务类型
-function messageService_Appointment_TypeUpdate(message) {
-	if (STATECODE_SUCCESS == message.StateCode) {
-		alert("更新预约服务类型成功。");
-		closePage();
-		setTimeout('sendGetServiceTypeList()', 50);
-	} else {
-		alert("更新预约服务类型失败！");
-	}
-}
-
 //查询预约
 function messageService_Appointment_QueryAppointService(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
@@ -273,9 +266,10 @@ function messageService_Appointment_QueryAppointService(message) {
 						case 4:
 						case 5:
 						case 6:
+						case 7:
 							row += '<td>' + formatTime(datas[i][j], datas[i][3]) + '</td>';
 							break;
-						case 7:
+						case 8:
 							state = datas[i][j];
 							row += '<td state="' + datas[i][j] + '">' + getAppointStateText(datas[i][j]) + '</td>';
 							break;
@@ -307,7 +301,7 @@ function messageService_Appointment_QueryAppointService(message) {
 				row += '</tr>';
 			}
 		} else {
-			row = '<tr><td colspan="8" style="text-align: center">无数据</td></tr>';
+			row = '<tr><td colspan="9" style="text-align: center">无数据</td></tr>';
 		}
 
 		$("#appointment_appointlist tbody").append(row);
@@ -317,11 +311,20 @@ function messageService_Appointment_QueryAppointService(message) {
 //新增预约
 function messageService_Appointment_AddAppointService(message) {
 	if (STATECODE_SUCCESS == message.StateCode) {
-		alert("预约成功。");
+		if ("Appointment_AddAppoint" == message.SubServiceName) {
+			alert("预约成功。");
+		} else {
+			alert("更新预约成功。");
+		}
+		
 		closePage();
 		setTimeout('sendGetAppointServiceList()', 50);
 	} else {
-		alert("预约失败！");
+		if ("Appointment_AddAppoint" == message.SubServiceName) {
+			alert("预约失败！");
+		} else {
+			alert("更新预约失败！");
+		}
 	}
 }
 
@@ -342,17 +345,6 @@ function messageService_Appointment_GetAppointInfo(message) {
 		$("#appoint_time").val(formatTime(message.Data[0][4]));
 	} else {
 		alert("获取预约信息失败，无法编辑！");
-	}
-}
-
-//更新预约
-function messageService_Appointment_EditAppoint(message) {
-	if (STATECODE_SUCCESS == message.StateCode) {
-		alert("更新预约成功。");
-		closePage();
-		setTimeout('sendGetAppointServiceList()', 50);
-	} else {
-		alert("更新预约失败！");
 	}
 }
 

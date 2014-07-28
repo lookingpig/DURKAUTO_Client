@@ -15,12 +15,22 @@ public class ClientConfig {
 	/**
 	 * 日期时间格式化格式
 	 */
-	public static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	public static final String DATETIME_FORMAT = "yyyy-MM-dd kk:mm:ss";
 	
 	/**
-	 * 时间格式化时间
+	 * 日期格式化格式
 	 */
-	public static final String TIME_FORMAT = "hh:mm";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	
+	/**
+	 * 时间格式化格式
+	 */
+	public static final String TIME_FORMAT = "kk:mm";
+	
+	/**
+	 * 长时间格式化格式
+	 */
+	public static final String TIME_LONG_FORMAT = "kk:mm:ss";
 	
 	/**
 	 * 消息服务

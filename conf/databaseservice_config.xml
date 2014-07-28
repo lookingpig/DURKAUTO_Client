@@ -37,15 +37,17 @@
 	<!-- 预约服务-新增服务类型 -->
 	<sql>
 		<key>Appointment_AddServiceType</key>
-		<statement>insert into durkauto_appointment_type values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
+		<statement>insert into durkauto_appointment_type values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
 		<parameter type="string">typeName</parameter>
 		<parameter type="int">parking</parameter>
 		<parameter type="int">businessDate</parameter>
 		<parameter type="string">businessHoursStart</parameter>
 		<parameter type="string">businessHoursEnd</parameter>
 		<parameter type="int">serviceTime</parameter>
+		<parameter type="int">minTime</parameter>
 		<parameter type="int">reminderTime</parameter>
 		<parameter type="int">waitTime</parameter>
+		<parameter type="int">timeScale</parameter>
 		<parameter type="string">timeBasis</parameter>
 		<parameter type="bool">exclusive</parameter>
 		<parameter type="bool">enable</parameter>
@@ -70,8 +72,10 @@
 			?{, business_hours_start=?}
 			?{, business_hours_end=?}
 			?{, service_time=?}
+			?{, min_time=?}
 			?{, reminder_time=?}
 			?{, Wait_time=?}
+			?{, time_scale=?}
 			?{, time_basis=?}
 			?{, exclusive=?}
 			where id=?
@@ -83,8 +87,10 @@
 		<parameter type="string" option="true">businessHoursStart</parameter>
 		<parameter type="string" option="true">businessHoursEnd</parameter>
 		<parameter type="int" option="true">serviceTime</parameter>
+		<parameter type="int" option="true">minTime</parameter>
 		<parameter type="int" option="true">reminderTime</parameter>
 		<parameter type="int" option="true">waitTime</parameter>
+		<parameter type="int" option="true">timeScale</parameter>
 		<parameter type="string" option="true">timeBasis</parameter>
 		<parameter type="bool" option="true">exclusive</parameter>
 		<parameter type="int">typeID</parameter>	
@@ -101,6 +107,7 @@
 				, a.appoint_time
 				, a.arrival_time
 				, a.reminder_time
+				, a.timeout_time
 				, a.service_state
 			from durkauto_appointment_service as a
 			left join durkauto_appointment_type as b on  a.service_type = b.id
@@ -124,10 +131,11 @@
 	<!-- 预约服务-新增预约 -->
 	<sql>
 		<key>Appointment_AddAppoint</key>
-		<statement>insert into durkauto_appointment_service values(null, ?, now(), ?, null, ?, 1)</statement>
+		<statement>insert into durkauto_appointment_service values(null, ?, now(), ?, null, ?, ?, 1)</statement>
 		<parameter type="int">serviceType</parameter>
 		<parameter type="string">appointTime</parameter>
-		<parameter type="string">reminderTime</parameter>		
+		<parameter type="string">reminderTime</parameter>
+		<parameter type="string">timeoutTime</parameter>
 	</sql>
 	
 	<!-- 预约服务-编辑预约 -->
@@ -135,11 +143,13 @@
 		<key>Appointment_EditAppoint</key>
 		<statement>
 			update durkauto_appointment_service 
-			set service_type=?, appoint_time=?, appoint_date=now() 
+			set service_type=?, appoint_time=?, appoint_date=now(), reminder_time=?, timeout_time=? 
 			where id=?
 		</statement>
 		<parameter type="int">serviceType</parameter>
 		<parameter type="string">appointTime</parameter>
+		<parameter type="string">reminderTime</parameter>
+		<parameter type="string">timeoutTime</parameter>
 		<parameter type="int">appointID</parameter>	
 	</sql>
 	
@@ -178,4 +188,13 @@
 		<parameter type="int" option="true">appointType</parameter>
 	</sql>
 	
+	<sql>
+		<key>Appointment_AppointTimeOut</key>
+		<statement>
+			update durkauto_appointment_service 
+			set service_state=4  
+			where service_state=1
+				and timeout_time&lt;=now()
+		</statement>
+	</sql>
 </database-services>
