@@ -90,6 +90,9 @@ public class AddAppointService implements MessageService {
 			
 			if (success) {
 				resMsg.addContent(StateCode.FLAG, StateCode.SUCCESS);
+				resMsg.addContent("reminderTime", formatter.format(reminderTime));
+				resMsg.addContent("timeoutTime", formatter.format(timeoutTime));
+				resMsg.addContent("appointMember", message.getSender());
 				
 				//定时更改服务状态
 				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(ClientConfig.DATE_FORMAT);

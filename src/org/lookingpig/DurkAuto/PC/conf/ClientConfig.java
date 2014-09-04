@@ -1,6 +1,8 @@
 package org.lookingpig.DurkAuto.PC.conf;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -83,6 +85,7 @@ public class ClientConfig {
 	
 	private static final Logger logger;
 	private static final Properties conf;
+	private static final Map<String, Object> cache;
 	
 	static {
 		logger = LogManager.getLogger(ClientConfig.class);
@@ -93,6 +96,8 @@ public class ClientConfig {
 		} catch (IOException e) {
 			logger.error("加载客户端配置文件失败！path: " + Class.class.getResource("/").getPath(), e);
 		}
+		
+		cache = new HashMap<String, Object>();
 	}
 	
 	/**
@@ -102,5 +107,32 @@ public class ClientConfig {
 	 */
 	public static String getConfig(String key) {
 		return conf.getProperty(key);
+	}
+	
+	/**
+	 * 放入缓存
+	 * @param key 索引
+	 * @param value 缓存
+	 */
+	public static void putCache(String key, Object value) {
+		cache.put(key, value);
+	}
+	
+	/**
+	 * 获得缓存
+	 * @param key 索引
+	 * @return 缓存
+	 */
+	public static Object getCache(String key) {
+		return cache.get(key);
+	}
+	
+	/**
+	 * 获得文件绝对路径
+	 * @param path 路径
+	 * @return 绝对路径
+	 */
+	public static String getFilePath(String path) {
+		return ClientConfig.class.getClassLoader().getResource("/").getPath() + path;
 	}
 }

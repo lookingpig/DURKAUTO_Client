@@ -50,4 +50,5 @@
 	
 	<!-- 预约服务 -->
 	<include>messageservice_appointment_config.xml</include>
+	<include>messageservice_server_config.xml</include>
 </message-services>

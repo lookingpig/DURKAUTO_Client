@@ -14,7 +14,10 @@
 		<statement>
 			select * 
 			from durkauto_appointment_type
+			where 1=1
+				?{and enable=?}
 		</statement>
+		<parameter type="bool" option="true">enable</parameter>
 	</sql>
 	
 	<!-- 预约服务-查询所有服务类型 -->

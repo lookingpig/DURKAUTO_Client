@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 预约服务 -->
+<message-services>
+	<!-- 查询服务类型服务 -->
+	<service>
+		<key>Server_InitializeService</key>
+		<class>org.lookingpig.DurkAuto.PC.message.service.server.InitializeService</class>
+	</service>
+</message-services>

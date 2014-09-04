@@ -10,6 +10,7 @@ public class StateCode {
 	public static final String DESCRIBE_FLAG = "StateDesc";
 	
 	public static final String SUCCESS = "000000000";
+	public static final String SUCCESS_TEXT = "success";
 	
 	public static final String FALL_UNKNOWN = "100000000";							//未知错误
 	public static final String FALL_DATASERVICE_NOSTART = "101001000";				//数据服务-服务未启动
